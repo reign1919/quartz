@@ -46,7 +46,7 @@ fetch("https://formsubmit.co/ajax/devreign.ai@gmail.com", {
   })
   .finally(function () {
     localStorage.removeItem("study-shop-cart");
-    window.location.href = "https://reign1919.github.io/quartz/orderplaced.html";
+    window.location.replace("/quartz/orderplaced.html");
   });
   
   for (var key in fields) {
