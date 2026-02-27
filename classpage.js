@@ -9,21 +9,19 @@ function initClassPage(products) {
 // In your classpage.js or cartpage.js — replace the existing place order handler
 
 function handlePlaceOrder() {
-  var emailInput = document.getElementById("emailInput"); // your email input
+  var emailInput = document.getElementById("emailInput");
   var email = emailInput.value.trim();
   var emailError = document.getElementById("emailError");
 
-  // Validate email
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     emailError.style.display = "block";
     return;
   }
   emailError.style.display = "none";
 
-  // Build product summary from cart
   var cart = JSON.parse(localStorage.getItem("study-shop-cart") || "[]");
   var productLines = cart.map(function (item) {
-    var product = findProduct(item.productId); // uses your existing findProduct from products.js
+    var product = findProduct(item.productId);
     if (!product) return "";
     return product.name + " (Class " + product.classLevel + ") x" + item.quantity + " — ₹" + (product.price * item.quantity).toFixed(2);
   }).filter(Boolean).join("\n");
@@ -33,20 +31,33 @@ function handlePlaceOrder() {
     return sum + (p ? p.price * item.quantity : 0);
   }, 0);
 
-  // Create a hidden form and POST to FormSubmit
-  var form = document.createElement("form");
-  form.method = "POST";
-  form.action = "https://formsubmit.co/devreign.ai@gmail.com";
-
-  var fields = {
-    "Customer Email": email,
-    "Products Ordered": productLines,
-    "Grand Total": "₹" + (total + 5).toFixed(2) + " (includes ₹5 service charge)",
-    "_subject": "New Order from " + email,
-    "_captcha": "false",            // disable captcha (optional)
-    "_template": "table",           // nice table format in email
-  };
-
+  fetch("https://formsubmit.co/ajax/devreign.ai@gmail.com", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "Accept": "application/json" },
+    body: JSON.stringify({
+      "email": email,
+      "Customer Email": email,
+      "Products Ordered": productLines,
+      "Grand Total": "₹" + (total + 5).toFixed(2) + " (includes ₹5 service charge)",
+      "_subject": "New Order from " + email,
+      "_template": "table",
+      "_captcha": "false",
+      "_autoresponse": "Hi there! Thank you for placing your order with Quartz. Our team will get in contact with you shortly with your invoice. We appreciate your support! — The Quartz Team",
+    })
+  })
+  .then(function (res) { return res.json(); })
+  .then(function (data) {
+    if (data.success) {
+      localStorage.removeItem("study-shop-cart");
+      window.location.href = "https://reign1919.github.io/quartz/orderplaced.html";
+    } else {
+      alert("Something went wrong. Please try again.");
+    }
+  })
+  .catch(function () {
+    alert("Network error. Please try again.");
+  });
+}
   for (var key in fields) {
     var input = document.createElement("input");
     input.type = "hidden";
