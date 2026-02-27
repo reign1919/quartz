@@ -1,0 +1,1240 @@
+index.html (Landing Page)
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Study Material Shop</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="aurora-bg" id="auroraBg">
+    <div class="aurora-gradient"></div>
+    <div class="aurora-ribbons" id="auroraRibbons"></div>
+    <div class="stars" id="stars"></div>
+    <div class="wave" style="animation-duration:9s;margin-top:-1300px"></div>
+    <div class="wave" style="animation-duration:15s;margin-top:-1330px"></div>
+    <div class="wave" style="animation-duration:7s;margin-top:-1360px"></div>
+    <div class="wave" style="animation-duration:7s;margin-top:-1390px"></div>
+    <div class="hill"></div>
+  </div>
+
+  <div class="landing-container">
+    <div class="glass-card landing-card">
+      <h1 class="gradient-text">Please select the class for which you want material</h1>
+      <div class="btn-row">
+        <a href="class10.html" class="gradient-btn">Class 10</a>
+        <a href="class11.html" class="gradient-btn">Class 11</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="aurora.js"></script>
+</body>
+</html>
+style.css (Shared styles)
+
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --background: #08000d;
+  --foreground: #ffffff;
+  --primary: hsl(310, 100%, 50%);
+  --glow-pink: hsl(310, 100%, 40%);
+  --glow-violet: hsl(270, 80%, 60%);
+  --card-bg: hsl(270, 20%, 8%);
+  --card-image-bg: hsl(25, 30%, 85%);
+  --glass-bg: rgba(255, 255, 255, 0.06);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --muted-fg: hsl(270, 10%, 65%);
+  --price-old: hsl(350, 80%, 65%);
+  --accent: hsl(160, 80%, 55%);
+  --radius: 1.25rem;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background: var(--background);
+  color: var(--foreground);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+a { text-decoration: none; color: inherit; }
+
+/* Glass card */
+.glass-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
+}
+
+.glass-card-hover:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 0 60px hsla(310, 100%, 40%, 0.3);
+}
+
+/* Gradient text */
+.gradient-text {
+  background: linear-gradient(90deg, var(--primary), var(--glow-violet));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Gradient button */
+.gradient-btn {
+  display: inline-block;
+  background: linear-gradient(90deg, var(--primary), var(--glow-violet));
+  color: #fff;
+  box-shadow: 0 0 18px hsla(310, 100%, 40%, 0.4);
+  transition: all 0.3s ease;
+  padding: 12px 24px;
+  border-radius: 50px;
+  border: none;
+  cursor: pointer;
+  font-family: 'Poppins', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.gradient-btn:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 0 30px hsla(310, 100%, 40%, 0.8);
+}
+
+/* Landing */
+.landing-container {
+  position: relative;
+  z-index: 10;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.landing-card {
+  text-align: center;
+  width: 90%;
+  max-width: 450px;
+  padding: 2.5rem;
+  box-shadow: 0 0 35px hsla(310, 100%, 40%, 0.3);
+  animation: fadeInUp 0.8s ease;
+}
+
+.landing-card h1 { font-size: 1.8rem; margin-bottom: 2rem; }
+
+.btn-row {
+  display: flex;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.btn-row .gradient-btn { flex: 1; min-width: 140px; }
+
+/* Class page layout */
+.page-content {
+  position: relative;
+  z-index: 10;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 80px 20px 96px;
+  animation: fadeInUp 0.8s ease;
+}
+
+.page-content h1 { font-size: 1.8rem; font-weight: 700; margin-bottom: 2.5rem; }
+
+/* Switcher */
+.switcher {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 50;
+  display: flex;
+  gap: 8px;
+  padding: 6px;
+  border-radius: 50px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+}
+
+.switch-pill {
+  padding: 8px 16px;
+  border-radius: 25px;
+  border: 1px solid rgba(255,255,255,0.2);
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(10px);
+  color: #fff;
+  cursor: pointer;
+  transition: 0.3s ease;
+  font-weight: 500;
+  font-size: 0.9rem;
+  font-family: 'Poppins', sans-serif;
+}
+
+.switch-pill:hover {
+  background: linear-gradient(90deg, var(--primary), var(--glow-violet));
+}
+
+.switch-pill-active {
+  background: #fff;
+  color: var(--background);
+  font-weight: 600;
+}
+
+.switch-pill-active:hover { background: #fff; }
+
+/* Sort bar */
+.sort-bar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-bottom: 2.25rem;
+}
+
+.sort-bar label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--muted-fg);
+}
+
+.sort-bar select {
+  appearance: none;
+  padding: 10px 40px 10px 20px;
+  border-radius: 50px;
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.15);
+  color: #fff;
+  min-width: 200px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  outline: none;
+}
+
+.sort-bar select option { background: hsl(270, 100%, 8%); }
+
+.sort-bar .arrow {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  font-size: 0.75rem;
+  opacity: 0.8;
+}
+
+/* Product grid */
+.product-grid {
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
+/* Product card */
+.product-card {
+  overflow: hidden;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 40px hsla(310, 100%, 40%, 0.15);
+}
+
+.product-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 0 60px hsla(310, 100%, 40%, 0.3);
+}
+
+.product-image {
+  height: 260px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: var(--card-image-bg);
+  text-align: center;
+}
+
+.product-image h2 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: var(--background);
+}
+
+.product-image p {
+  font-size: 0.875rem;
+  color: hsl(270, 20%, 30%);
+}
+
+.hot-badge {
+  display: inline-block;
+  margin-top: 0.75rem;
+  padding: 4px 12px;
+  border-radius: 50px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  background: linear-gradient(90deg, var(--primary), var(--glow-violet));
+  color: #fff;
+}
+
+.product-info {
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.price-old {
+  text-decoration: line-through;
+  font-size: 0.875rem;
+  color: var(--price-old);
+}
+
+.price-new {
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+.product-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.icon-btn {
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 1.25rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-btn:hover { color: var(--primary); transform: scale(1.1); }
+
+.qty-control {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 8px;
+  border-radius: 50px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+}
+
+.qty-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(90deg, var(--primary), var(--glow-violet));
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.qty-num {
+  font-size: 0.875rem;
+  font-weight: 600;
+  min-width: 20px;
+  text-align: center;
+}
+
+/* Floating cart */
+.cart-float {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 50;
+}
+
+.cart-float a {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 24px;
+  border-radius: 50px;
+  background: linear-gradient(90deg, var(--primary), var(--glow-violet));
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.95rem;
+  box-shadow: 0 0 30px hsla(310, 100%, 40%, 0.5);
+  transition: all 0.3s ease;
+}
+
+.cart-float a:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 0 40px hsla(310, 100%, 40%, 0.8);
+}
+
+.cart-badge {
+  background: #fff;
+  color: var(--background);
+  font-size: 0.75rem;
+  font-weight: 700;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Cart page */
+.cart-container {
+  position: relative;
+  z-index: 10;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 80px 20px 96px;
+  animation: fadeInUp 0.8s ease;
+}
+
+.cart-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 2rem;
+}
+
+.cart-header a {
+  font-size: 1.5rem;
+  transition: color 0.3s;
+}
+
+.cart-header a:hover { color: var(--primary); }
+
+.cart-header h1 { font-size: 1.8rem; font-weight: 700; }
+
+.cart-empty {
+  text-align: center;
+  padding: 4rem 2rem;
+}
+
+.cart-empty p { color: var(--muted-fg); margin: 1rem 0 2rem; font-size: 1.1rem; }
+
+.cart-items { display: flex; flex-direction: column; gap: 1rem; }
+
+.cart-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.25rem;
+}
+
+.cart-item-left { display: flex; flex-direction: column; gap: 2px; }
+
+.cart-item-name { font-weight: 600; }
+
+.cart-item-meta { font-size: 0.875rem; color: var(--muted-fg); }
+
+.cart-item-right { display: flex; align-items: center; gap: 1rem; }
+
+.cart-item-total { font-weight: 600; min-width: 70px; text-align: right; }
+
+.remove-btn {
+  background: transparent;
+  border: none;
+  color: hsl(350, 80%, 55%);
+  cursor: pointer;
+  font-size: 1.1rem;
+  transition: opacity 0.3s;
+}
+
+.remove-btn:hover { opacity: 0.7; }
+
+/* Delivery note */
+.delivery-note {
+  text-align: center;
+  padding: 1rem;
+  margin: 1.5rem 0;
+  color: var(--accent);
+  font-weight: 500;
+  border-radius: var(--radius);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+}
+
+/* Bill */
+.bill-section {
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+}
+
+.bill-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  font-size: 0.95rem;
+}
+
+.bill-row.savings { color: var(--accent); }
+
+.bill-divider {
+  border: none;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  margin: 8px 0;
+}
+
+.bill-row.grand {
+  font-size: 1.2rem;
+  font-weight: 700;
+  padding-top: 12px;
+}
+
+/* Email section */
+.email-section { margin: 1.5rem 0; }
+
+.email-section label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.email-section .helper {
+  font-size: 0.8rem;
+  color: var(--muted-fg);
+  margin-bottom: 0.75rem;
+}
+
+.email-input-row { display: flex; gap: 8px; }
+
+.email-input {
+  flex: 1;
+  padding: 12px 20px;
+  border-radius: 50px;
+  border: 1px solid rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(12px);
+  color: #fff;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+.email-input:focus { border-color: var(--primary); }
+
+.email-input.invalid { border-color: hsl(350, 80%, 55%); }
+
+.email-error {
+  color: hsl(350, 80%, 55%);
+  font-size: 0.8rem;
+  margin-top: 6px;
+  display: none;
+}
+
+/* Privacy info */
+.privacy-info {
+  padding: 1.25rem;
+  margin: 1.5rem 0;
+  font-size: 0.85rem;
+  color: var(--muted-fg);
+  line-height: 1.6;
+  border-left: 3px solid var(--glow-violet);
+}
+
+.privacy-info strong { color: var(--foreground); }
+
+/* Action buttons */
+.cart-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 1.5rem;
+}
+
+.btn-outline {
+  padding: 12px 24px;
+  border-radius: 50px;
+  border: 1px solid rgba(255,255,255,0.2);
+  background: transparent;
+  color: #fff;
+  font-family: 'Poppins', sans-serif;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-outline:hover {
+  background: rgba(255,255,255,0.1);
+}
+
+.btn-danger {
+  border-color: hsl(350, 80%, 55%);
+  color: hsl(350, 80%, 55%);
+}
+
+.btn-danger:hover {
+  background: hsla(350, 80%, 55%, 0.15);
+}
+
+/* Toast */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  padding: 12px 24px;
+  border-radius: 12px;
+  background: hsl(270, 20%, 15%);
+  color: #fff;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.9rem;
+  z-index: 999;
+  opacity: 0;
+  transition: all 0.3s ease;
+  pointer-events: none;
+}
+
+.toast.show {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
+
+/* Aurora background */
+.aurora-bg {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: -2;
+  background: #000;
+}
+
+.aurora-gradient {
+  position: absolute;
+  left: -50%; top: -50%;
+  width: 200%; height: 200%;
+  max-width: 2400px; max-height: 2400px;
+  background:
+    radial-gradient(ellipse at 25% 35%, rgba(80,255,170,0.22) 10%, transparent 60%),
+    radial-gradient(ellipse at 75% 45%, rgba(150,90,255,0.22) 10%, transparent 60%),
+    radial-gradient(ellipse at 50% 70%, rgba(120,255,200,0.14) 5%, transparent 65%),
+    radial-gradient(ellipse at 40% 20%, rgba(170,110,255,0.15) 5%, transparent 70%);
+  filter: blur(95px);
+  animation: northern 28s linear infinite alternate;
+  mix-blend-mode: screen;
+}
+
+.aurora-ribbons {
+  position: absolute;
+  left: 0; right: 0;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  align-items: flex-start;
+  top: 10vh;
+  max-width: 1400px;
+  z-index: -1;
+}
+
+.stars { position: absolute; inset: 0; z-index: -4; }
+
+.wave {
+  position: absolute;
+  left: 50%; top: 50%;
+  width: 100vw; height: 100vw;
+  max-width: 1400px; max-height: 1400px;
+  border-radius: 47%;
+  background: rgba(255,255,255,0.03);
+  box-shadow: 0 0 30px 10px rgba(255,255,255,0.02);
+  opacity: 0.06;
+  animation: drift 9s infinite linear;
+  z-index: -3;
+  pointer-events: none;
+}
+
+.hill {
+  position: absolute;
+  bottom: 0; left: 0;
+  width: 120vw; margin-left: -10vw;
+  height: 215px; margin-bottom: -100px;
+  border-radius: 50%;
+  background: linear-gradient(rgb(10,0,10), black);
+  box-shadow: 3px 0 50px rgba(0,0,0,0.6);
+  z-index: 1;
+}
+
+/* Animations */
+@keyframes drift {
+  0% { transform: translate(-50%, -50%) rotate(0deg); }
+  50% { transform: translate(-50%, -50%) rotate(180deg); }
+  100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+@keyframes topup {
+  0%, 100% { transform: translateY(30px); }
+  50% { transform: translateY(100px); }
+}
+
+@keyframes northern {
+  0% { transform: translate(5%, -2%); }
+  25% { transform: translate(10%, 7%); }
+  40% { transform: rotate(-10deg); }
+  60% { transform: translate(7%, -2%); }
+  85% { transform: translate(6%, 3%) rotate(12deg); }
+  100% { transform: none; }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+}
+aurora.js (Shared aurora + stars generator)
+
+
+(function () {
+  function rand(min, max) { return Math.random() * (max - min) + min; }
+
+  var colors = [
+    "rgba(90,255,180,0.14)",
+    "rgba(140,100,255,0.14)",
+    "rgba(120,255,210,0.10)",
+    "rgba(180,130,255,0.12)",
+  ];
+
+  var ribbons = document.getElementById("auroraRibbons");
+  if (ribbons) {
+    for (var i = 0; i < 24; i++) {
+      var s = document.createElement("span");
+      var h = Math.round(rand(120, 320));
+      var ml = Math.round(rand(6, 40));
+      var mt = Math.round(rand(-60, 120));
+      var blur = Math.round(rand(40, 110));
+      var dur = Math.round(rand(6000, 18000));
+      var c = colors[Math.floor(Math.random() * colors.length)];
+      s.style.cssText =
+        "display:block;width:18px;min-height:" + h + "px;margin-left:" + ml +
+        "px;margin-top:" + mt + "px;border-radius:5% 52% 30px 20px;opacity:0.6;" +
+        "background:transparent;box-shadow:0 0 " + blur + "px 20px " + c +
+        ";animation:topup " + dur + "ms infinite linear;transform:skew(-10deg,18deg)" +
+        " translateX(" + Math.round(rand(-8, 8)) + "px);will-change:transform;";
+      ribbons.appendChild(s);
+    }
+  }
+
+  var starContainer = document.getElementById("stars");
+  function createStars() {
+    if (!starContainer) return;
+    starContainer.innerHTML = "";
+    for (var i = 0; i < 150; i++) {
+      var star = document.createElement("span");
+      var size = Math.random() * 2 + 0.2;
+      var opacity = Math.random() * 0.9 + 0.1;
+      star.style.cssText =
+        "position:absolute;left:" + (Math.random() * 100) + "%;top:" +
+        (Math.random() * 100) + "%;width:" + size + "px;height:" + size +
+        "px;border-radius:50%;background:rgba(255,255,255," + opacity.toFixed(2) +
+        ");box-shadow:0 0 " + Math.round(size * 6) + "px rgba(255,255,255," +
+        (opacity / 2).toFixed(2) + ");pointer-events:none;";
+      starContainer.appendChild(star);
+    }
+  }
+  createStars();
+
+  var resizeTimer;
+  window.addEventListener("resize", function () {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(createStars, 200);
+  });
+})();
+cart.js (Shared cart logic — localStorage)
+
+
+var CART_KEY = "study-shop-cart";
+
+function getCart() {
+  try {
+    var raw = localStorage.getItem(CART_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch (e) { return []; }
+}
+
+function saveCart(cart) {
+  localStorage.setItem(CART_KEY, JSON.stringify(cart));
+}
+
+function addToCart(productId) {
+  var cart = getCart();
+  var item = cart.find(function (i) { return i.productId === productId; });
+  if (item) { item.quantity++; }
+  else { cart.push({ productId: productId, quantity: 1 }); }
+  saveCart(cart);
+  return cart;
+}
+
+function decreaseQty(productId) {
+  var cart = getCart();
+  var idx = cart.findIndex(function (i) { return i.productId === productId; });
+  if (idx === -1) return cart;
+  if (cart[idx].quantity <= 1) { cart.splice(idx, 1); }
+  else { cart[idx].quantity--; }
+  saveCart(cart);
+  return cart;
+}
+
+function removeFromCart(productId) {
+  var cart = getCart().filter(function (i) { return i.productId !== productId; });
+  saveCart(cart);
+  return cart;
+}
+
+function getQuantity(productId) {
+  var item = getCart().find(function (i) { return i.productId === productId; });
+  return item ? item.quantity : 0;
+}
+
+function getTotalItems() {
+  return getCart().reduce(function (sum, i) { return sum + i.quantity; }, 0);
+}
+
+function clearCart() {
+  localStorage.removeItem(CART_KEY);
+}
+products.js (Shared product data)
+
+
+var class10Products = [
+  { id: "math10-master-notes", name: "Mathematics Master Notes", caption: "Complete algebra, trigonometry and geometry coverage.", price: 799, oldPrice: 999, hot: true, classLevel: 10 },
+  { id: "science10-quick-revision", name: "Science Quick Revision", caption: "Physics, Chemistry and Biology condensed summaries.", price: 699, oldPrice: 850, hot: false, classLevel: 10 },
+  { id: "english10-writing-guide", name: "English Writing Guide", caption: "Formats, essays, letters and grammar mastery.", price: 599, oldPrice: 750, hot: false, classLevel: 10 },
+  { id: "sst10-toolkit", name: "Social Science Toolkit", caption: "History timelines, Civics breakdowns and Geography maps.", price: 749, oldPrice: 920, hot: false, classLevel: 10 },
+];
+
+var class11Products = [
+  { id: "math11-master-notes", name: "Mathematics Master Notes", caption: "Complete algebra, trigonometry and geometry coverage.", price: 799, oldPrice: 999, hot: true, classLevel: 11 },
+  { id: "science11-quick-revision", name: "Science Quick Revision", caption: "Physics, Chemistry and Biology condensed summaries.", price: 699, oldPrice: 850, hot: false, classLevel: 11 },
+  { id: "english11-writing-guide", name: "English Writing Guide", caption: "Formats, essays, letters and grammar mastery.", price: 599, oldPrice: 750, hot: false, classLevel: 11 },
+  { id: "sst11-toolkit", name: "Social Science Toolkit", caption: "History timelines, Civics breakdowns and Geography maps.", price: 749, oldPrice: 920, hot: false, classLevel: 11 },
+];
+
+var allProducts = class10Products.concat(class11Products);
+
+function findProduct(id) {
+  return allProducts.find(function (p) { return p.id === id; });
+}
+class10.html
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Class 10 — Study Material</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="aurora-bg" id="auroraBg">
+    <div class="aurora-gradient"></div>
+    <div class="aurora-ribbons" id="auroraRibbons"></div>
+    <div class="stars" id="stars"></div>
+    <div class="wave" style="animation-duration:9s;margin-top:-1300px"></div>
+    <div class="wave" style="animation-duration:15s;margin-top:-1330px"></div>
+    <div class="wave" style="animation-duration:7s;margin-top:-1360px"></div>
+    <div class="wave" style="animation-duration:7s;margin-top:-1390px"></div>
+    <div class="hill"></div>
+  </div>
+
+  <!-- Switcher -->
+  <div class="switcher">
+    <a href="class10.html" class="switch-pill switch-pill-active">Class 10</a>
+    <a href="class11.html" class="switch-pill">Class 11</a>
+  </div>
+
+  <!-- Floating cart -->
+  <div class="cart-float">
+    <a href="cart.html">🛒 Cart <span class="cart-badge" id="cartBadge">0</span></a>
+  </div>
+
+  <div class="page-content">
+    <h1>Class 10 Notes &amp; Material</h1>
+
+    <div class="sort-bar">
+      <label>Sort By:</label>
+      <div style="position:relative">
+        <select id="sortSelect">
+          <option value="default">Default</option>
+          <option value="low">Price: Low to High</option>
+          <option value="high">Price: High to Low</option>
+          <option value="hot">Hot Selling</option>
+        </select>
+        <span class="arrow">▾</span>
+      </div>
+    </div>
+
+    <div class="product-grid" id="productGrid"></div>
+  </div>
+
+  <script src="products.js"></script>
+  <script src="cart.js"></script>
+  <script src="aurora.js"></script>
+  <script src="classpage.js"></script>
+  <script>initClassPage(class10Products);</script>
+</body>
+</html>
+class11.html
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Class 11 — Study Material</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="aurora-bg" id="auroraBg">
+    <div class="aurora-gradient"></div>
+    <div class="aurora-ribbons" id="auroraRibbons"></div>
+    <div class="stars" id="stars"></div>
+    <div class="wave" style="animation-duration:9s;margin-top:-1300px"></div>
+    <div class="wave" style="animation-duration:15s;margin-top:-1330px"></div>
+    <div class="wave" style="animation-duration:7s;margin-top:-1360px"></div>
+    <div class="wave" style="animation-duration:7s;margin-top:-1390px"></div>
+    <div class="hill"></div>
+  </div>
+
+  <div class="switcher">
+    <a href="class10.html" class="switch-pill">Class 10</a>
+    <a href="class11.html" class="switch-pill switch-pill-active">Class 11</a>
+  </div>
+
+  <div class="cart-float">
+    <a href="cart.html">🛒 Cart <span class="cart-badge" id="cartBadge">0</span></a>
+  </div>
+
+  <div class="page-content">
+    <h1>Class 11 Notes &amp; Material</h1>
+
+    <div class="sort-bar">
+      <label>Sort By:</label>
+      <div style="position:relative">
+        <select id="sortSelect">
+          <option value="default">Default</option>
+          <option value="low">Price: Low to High</option>
+          <option value="high">Price: High to Low</option>
+          <option value="hot">Hot Selling</option>
+        </select>
+        <span class="arrow">▾</span>
+      </div>
+    </div>
+
+    <div class="product-grid" id="productGrid"></div>
+  </div>
+
+  <script src="products.js"></script>
+  <script src="cart.js"></script>
+  <script src="aurora.js"></script>
+  <script src="classpage.js"></script>
+  <script>initClassPage(class11Products);</script>
+</body>
+</html>
+classpage.js (Shared rendering for class pages)
+
+
+function initClassPage(products) {
+  var grid = document.getElementById("productGrid");
+  var sortSelect = document.getElementById("sortSelect");
+  var badge = document.getElementById("cartBadge");
+
+  function updateBadge() {
+    badge.textContent = getTotalItems();
+  }
+
+  function renderCards(list) {
+    grid.innerHTML = "";
+    list.forEach(function (p) {
+      var qty = getQuantity(p.id);
+      var card = document.createElement("div");
+      card.className = "glass-card product-card";
+
+      var actionsHTML;
+      if (qty === 0) {
+        actionsHTML =
+          '<button class="icon-btn" data-add="' + p.id + '" title="Add to cart">🛒</button>';
+      } else {
+        actionsHTML =
+          '<div class="qty-control">' +
+            '<button class="qty-btn" data-dec="' + p.id + '">−</button>' +
+            '<span class="qty-num">' + qty + '</span>' +
+            '<button class="qty-btn" data-inc="' + p.id + '">+</button>' +
+          '</div>';
+      }
+
+      card.innerHTML =
+        '<div class="product-image">' +
+          '<div>' +
+            '<h2>' + p.name + '</h2>' +
+            '<p>' + p.caption + '</p>' +
+            (p.hot ? '<span class="hot-badge">🔥 Hot Selling</span>' : '') +
+          '</div>' +
+        '</div>' +
+        '<div class="product-info">' +
+          '<div>' +
+            '<span class="price-old">₹' + p.oldPrice.toFixed(2) + '</span><br>' +
+            '<span class="price-new">₹' + p.price.toFixed(2) + '</span>' +
+          '</div>' +
+          '<div class="product-actions">' +
+            '<button class="icon-btn" title="Wishlist">♡</button>' +
+            actionsHTML +
+          '</div>' +
+        '</div>';
+
+      grid.appendChild(card);
+    });
+
+    // Attach events
+    grid.querySelectorAll("[data-add]").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        addToCart(btn.getAttribute("data-add"));
+        render();
+      });
+    });
+    grid.querySelectorAll("[data-inc]").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        addToCart(btn.getAttribute("data-inc"));
+        render();
+      });
+    });
+    grid.querySelectorAll("[data-dec]").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        decreaseQty(btn.getAttribute("data-dec"));
+        render();
+      });
+    });
+  }
+
+  function getSorted() {
+    var copy = products.slice();
+    var mode = sortSelect.value;
+    if (mode === "low") copy.sort(function (a, b) { return a.price - b.price; });
+    else if (mode === "high") copy.sort(function (a, b) { return b.price - a.price; });
+    else if (mode === "hot") copy.sort(function (a, b) { return (b.hot ? 1 : 0) - (a.hot ? 1 : 0); });
+    return copy;
+  }
+
+  function render() {
+    renderCards(getSorted());
+    updateBadge();
+  }
+
+  sortSelect.addEventListener("change", render);
+  render();
+}
+cart.html
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cart — Study Material Shop</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="aurora-bg" id="auroraBg">
+    <div class="aurora-gradient"></div>
+    <div class="aurora-ribbons" id="auroraRibbons"></div>
+    <div class="stars" id="stars"></div>
+    <div class="wave" style="animation-duration:9s;margin-top:-1300px"></div>
+    <div class="wave" style="animation-duration:15s;margin-top:-1330px"></div>
+    <div class="wave" style="animation-duration:7s;margin-top:-1360px"></div>
+    <div class="wave" style="animation-duration:7s;margin-top:-1390px"></div>
+    <div class="hill"></div>
+  </div>
+
+  <div class="cart-container" id="cartRoot"></div>
+  <div class="toast" id="toast"></div>
+
+  <script src="products.js"></script>
+  <script src="cart.js"></script>
+  <script src="aurora.js"></script>
+  <script>
+  (function () {
+    var root = document.getElementById("cartRoot");
+    var toastEl = document.getElementById("toast");
+    var SERVICE_CHARGE = 5;
+
+    function showToast(msg) {
+      toastEl.textContent = msg;
+      toastEl.classList.add("show");
+      setTimeout(function () { toastEl.classList.remove("show"); }, 2500);
+    }
+
+    function render() {
+      var cart = getCart();
+      var items = [];
+      cart.forEach(function (ci) {
+        var p = findProduct(ci.productId);
+        if (p) items.push({ product: p, quantity: ci.quantity });
+      });
+
+      if (items.length === 0) {
+        root.innerHTML =
+          '<div class="cart-header"><a href="index.html">←</a><h1>Checkout</h1></div>' +
+          '<div class="glass-card cart-empty">' +
+            '<div style="font-size:3rem;margin-bottom:0.5rem">🛒</div>' +
+            '<p>Your cart is empty</p>' +
+            '<a href="class10.html" class="gradient-btn">Browse Material</a>' +
+          '</div>';
+        return;
+      }
+
+      var itemsTotal = 0;
+      var oldTotal = 0;
+
+      var itemsHTML = '';
+      items.forEach(function (i) {
+        var sub = i.product.price * i.quantity;
+        itemsTotal += sub;
+        oldTotal += i.product.oldPrice * i.quantity;
+        itemsHTML +=
+          '<div class="glass-card cart-item">' +
+            '<div class="cart-item-left">' +
+              '<span class="cart-item-name">' + i.product.name +
+                (i.product.classLevel ? ' <span style="font-size:0.75rem;color:var(--muted-fg)">(Class ' + i.product.classLevel + ')</span>' : '') +
+              '</span>' +
+              '<span class="cart-item-meta">₹' + i.product.price.toFixed(2) + ' × ' + i.quantity + '</span>' +
+            '</div>' +
+            '<div class="cart-item-right">' +
+              '<div class="qty-control">' +
+                '<button class="qty-btn" data-dec="' + i.product.id + '">−</button>' +
+                '<span class="qty-num">' + i.quantity + '</span>' +
+                '<button class="qty-btn" data-inc="' + i.product.id + '">+</button>' +
+              '</div>' +
+              '<span class="cart-item-total">₹' + sub.toFixed(2) + '</span>' +
+              '<button class="remove-btn" data-rm="' + i.product.id + '" title="Remove">✕</button>' +
+            '</div>' +
+          '</div>';
+      });
+
+      var savings = oldTotal - itemsTotal;
+      var grandTotal = itemsTotal + SERVICE_CHARGE;
+
+      root.innerHTML =
+        '<div class="cart-header"><a href="javascript:history.back()">←</a><h1>Checkout</h1></div>' +
+        '<div class="cart-items">' + itemsHTML + '</div>' +
+
+        '<div class="delivery-note">📦 Delivery within 24 hours</div>' +
+
+        '<div class="glass-card bill-section">' +
+          '<div class="bill-row"><span>Items Total</span><span>₹' + itemsTotal.toFixed(2) + '</span></div>' +
+          '<div class="bill-row savings"><span>Total Savings</span><span>−₹' + savings.toFixed(2) + '</span></div>' +
+          '<div class="bill-row"><span>Service Charge</span><span>₹' + SERVICE_CHARGE.toFixed(2) + '</span></div>' +
+          '<hr class="bill-divider">' +
+          '<div class="bill-row grand"><span>Grand Total</span><span>₹' + grandTotal.toFixed(2) + '</span></div>' +
+        '</div>' +
+
+        '<div class="email-section">' +
+          '<label>Your Email Address</label>' +
+          '<p class="helper">We\'ll send payment details and deliver materials to this email.</p>' +
+          '<div class="email-input-row">' +
+            '<input type="email" id="emailInput" class="email-input" placeholder="you@example.com" />' +
+          '</div>' +
+          '<p class="email-error" id="emailError">Please enter a valid email address.</p>' +
+        '</div>' +
+
+        '<div class="glass-card privacy-info">' +
+          '<strong>🔒 Your Privacy Matters</strong><br><br>' +
+          'This is a humble, small-scale project. We process payments personally with each user to ensure safety and transparency. ' +
+          'You don\'t need to share sensitive financial details on this website — we\'ll reach out to your email to arrange payment securely. ' +
+          'Your materials will be delivered digitally within 24 hours of confirmed payment. ' +
+          'We never store or share your personal information with third parties.' +
+        '</div>' +
+
+        '<div class="cart-actions">' +
+          '<button class="gradient-btn" id="placeOrderBtn">Proceed to Place Order</button>' +
+          '<button class="btn-outline btn-danger" id="clearCartBtn">Clear Cart</button>' +
+        '</div>';
+
+      // Events
+      root.querySelectorAll("[data-inc]").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          addToCart(btn.getAttribute("data-inc"));
+          render();
+        });
+      });
+      root.querySelectorAll("[data-dec]").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          decreaseQty(btn.getAttribute("data-dec"));
+          render();
+        });
+      });
+      root.querySelectorAll("[data-rm]").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          removeFromCart(btn.getAttribute("data-rm"));
+          render();
+          showToast("Item removed from cart");
+        });
+      });
+
+      document.getElementById("clearCartBtn").addEventListener("click", function () {
+        clearCart();
+        render();
+        showToast("Cart cleared");
+      });
+
+      document.getElementById("placeOrderBtn").addEventListener("click", function () {
+        var emailInput = document.getElementById("emailInput");
+        var emailError = document.getElementById("emailError");
+        var email = emailInput.value.trim();
+        var valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+        if (!valid) {
+          emailInput.classList.add("invalid");
+          emailError.style.display = "block";
+          emailInput.focus();
+          return;
+        }
+
+        emailInput.classList.remove("invalid");
+        emailError.style.display = "none";
+        showToast("Order placed! Check " + email + " for details.");
+        clearCart();
+        setTimeout(function () { render(); }, 1500);
+      });
+
+      var emailInput = document.getElementById("emailInput");
+      emailInput.addEventListener("input", function () {
+        emailInput.classList.remove("invalid");
+        document.getElementById("emailError").style.display = "none";
+      });
+    }
+
+    render();
+  })();
+  </script>
+</body>
+</html>

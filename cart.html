@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cart — Study Material Shop</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+
+  <div class="aurora-bg" id="auroraBg">
+    <div class="aurora-gradient"></div>
+    <div class="aurora-ribbons" id="auroraRibbons"></div>
+    <div class="stars" id="stars"></div>
+    <div class="wave" style="animation-duration:9s;margin-top:-1300px"></div>
+    <div class="wave" style="animation-duration:15s;margin-top:-1330px"></div>
+    <div class="wave" style="animation-duration:7s;margin-top:-1360px"></div>
+    <div class="wave" style="animation-duration:7s;margin-top:-1390px"></div>
+    <div class="hill"></div>
+  </div>
+
+  <div class="cart-container" id="cartRoot"></div>
+  <div class="toast" id="toast"></div>
+
+  <script src="products.js"></script>
+  <script src="cart.js"></script>
+  <script src="aurora.js"></script>
+  <script>
+  (function () {
+    var root = document.getElementById("cartRoot");
+    var toastEl = document.getElementById("toast");
+    var SERVICE_CHARGE = 5;
+
+    function showToast(msg) {
+      toastEl.textContent = msg;
+      toastEl.classList.add("show");
+      setTimeout(function () { toastEl.classList.remove("show"); }, 2500);
+    }
+
+    function render() {
+      var cart = getCart();
+      var items = [];
+      cart.forEach(function (ci) {
+        var p = findProduct(ci.productId);
+        if (p) items.push({ product: p, quantity: ci.quantity });
+      });
+
+      if (items.length === 0) {
+        root.innerHTML =
+          '<div class="cart-header"><a href="index.html">←</a><h1>Checkout</h1></div>' +
+          '<div class="glass-card cart-empty">' +
+            '<div style="font-size:3rem;margin-bottom:0.5rem">🛒</div>' +
+            '<p>Your cart is empty</p>' +
+            '<a href="class10.html" class="gradient-btn">Browse Material</a>' +
+          '</div>';
+        return;
+      }
+
+      var itemsTotal = 0;
+      var oldTotal = 0;
+
+      var itemsHTML = '';
+      items.forEach(function (i) {
+        var sub = i.product.price * i.quantity;
+        itemsTotal += sub;
+        oldTotal += i.product.oldPrice * i.quantity;
+        itemsHTML +=
+          '<div class="glass-card cart-item">' +
+            '<div class="cart-item-left">' +
+              '<span class="cart-item-name">' + i.product.name +
+                (i.product.classLevel ? ' <span style="font-size:0.75rem;color:var(--muted-fg)">(Class ' + i.product.classLevel + ')</span>' : '') +
+              '</span>' +
+              '<span class="cart-item-meta">₹' + i.product.price.toFixed(2) + ' × ' + i.quantity + '</span>' +
+            '</div>' +
+            '<div class="cart-item-right">' +
+              '<div class="qty-control">' +
+                '<button class="qty-btn" data-dec="' + i.product.id + '">−</button>' +
+                '<span class="qty-num">' + i.quantity + '</span>' +
+                '<button class="qty-btn" data-inc="' + i.product.id + '">+</button>' +
+              '</div>' +
+              '<span class="cart-item-total">₹' + sub.toFixed(2) + '</span>' +
+              '<button class="remove-btn" data-rm="' + i.product.id + '" title="Remove">✕</button>' +
+            '</div>' +
+          '</div>';
+      });
+
+      var savings = oldTotal - itemsTotal;
+      var grandTotal = itemsTotal + SERVICE_CHARGE;
+
+      root.innerHTML =
+        '<div class="cart-header"><a href="javascript:history.back()">←</a><h1>Checkout</h1></div>' +
+        '<div class="cart-items">' + itemsHTML + '</div>' +
+
+        '<div class="delivery-note">📦 Delivery within 24 hours</div>' +
+
+        '<div class="glass-card bill-section">' +
+          '<div class="bill-row"><span>Items Total</span><span>₹' + itemsTotal.toFixed(2) + '</span></div>' +
+          '<div class="bill-row savings"><span>Total Savings</span><span>−₹' + savings.toFixed(2) + '</span></div>' +
+          '<div class="bill-row"><span>Service Charge</span><span>₹' + SERVICE_CHARGE.toFixed(2) + '</span></div>' +
+          '<hr class="bill-divider">' +
+          '<div class="bill-row grand"><span>Grand Total</span><span>₹' + grandTotal.toFixed(2) + '</span></div>' +
+        '</div>' +
+
+        '<div class="email-section">' +
+          '<label>Your Email Address</label>' +
+          '<p class="helper">We\'ll send payment details and deliver materials to this email.</p>' +
+          '<div class="email-input-row">' +
+            '<input type="email" id="emailInput" class="email-input" placeholder="you@example.com" />' +
+          '</div>' +
+          '<p class="email-error" id="emailError">Please enter a valid email address.</p>' +
+        '</div>' +
+
+        '<div class="glass-card privacy-info">' +
+          '<strong>🔒 Your Privacy Matters</strong><br><br>' +
+          'This is a humble, small-scale project. We process payments personally with each user to ensure safety and transparency. ' +
+          'You don\'t need to share sensitive financial details on this website — we\'ll reach out to your email to arrange payment securely. ' +
+          'Your materials will be delivered digitally within 24 hours of confirmed payment. ' +
+          'We never store or share your personal information with third parties.' +
+        '</div>' +
+
+        '<div class="cart-actions">' +
+          '<button class="gradient-btn" id="placeOrderBtn">Proceed to Place Order</button>' +
+          '<button class="btn-outline btn-danger" id="clearCartBtn">Clear Cart</button>' +
+        '</div>';
+
+      // Events
+      root.querySelectorAll("[data-inc]").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          addToCart(btn.getAttribute("data-inc"));
+          render();
+        });
+      });
+      root.querySelectorAll("[data-dec]").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          decreaseQty(btn.getAttribute("data-dec"));
+          render();
+        });
+      });
+      root.querySelectorAll("[data-rm]").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          removeFromCart(btn.getAttribute("data-rm"));
+          render();
+          showToast("Item removed from cart");
+        });
+      });
+
+      document.getElementById("clearCartBtn").addEventListener("click", function () {
+        clearCart();
+        render();
+        showToast("Cart cleared");
+      });
+
+document.getElementById("placeOrderBtn").addEventListener("click", function () {
+  var emailInput = document.getElementById("emailInput");
+  var emailError = document.getElementById("emailError");
+  var email = emailInput.value.trim();
+  var valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+  if (!valid) {
+    emailInput.classList.add("invalid");
+    emailError.style.display = "block";
+    emailInput.focus();
+    return;
+  }
+
+  emailInput.classList.remove("invalid");
+  emailError.style.display = "none";
+
+  // Build product summary from cart
+  var cart = getCart();
+  var productLines = cart.map(function (item) {
+    var product = findProduct(item.productId);
+    if (!product) return "";
+    return product.name + " (Class " + product.classLevel + ") x" + item.quantity + " — ₹" + (product.price * item.quantity).toFixed(2);
+  }).filter(Boolean).join("\n");
+
+  var itemsTotal = cart.reduce(function (sum, item) {
+    var p = findProduct(item.productId);
+    return sum + (p ? p.price * item.quantity : 0);
+  }, 0);
+
+  var grandTotal = itemsTotal + SERVICE_CHARGE;
+
+  // Build and submit the FormSubmit form
+  var form = document.createElement("form");
+  form.method = "POST";
+  form.action = "https://formsubmit.co/devreign.ai@gmail.com";
+
+  var fields = {
+    "Customer Email": email,
+    "Products Ordered": productLines,
+    "Grand Total": "₹" + grandTotal.toFixed(2) + " (includes ₹" + SERVICE_CHARGE + " service charge)",
+    "_subject": "New Order from " + email,
+    "_captcha": "false",
+    "_template": "table",
+    "_next": window.location.origin
+  };
+
+  for (var key in fields) {
+    var input = document.createElement("input");
+    input.type = "hidden";
+    input.name = key;
+    input.value = fields[key];
+    form.appendChild(input);
+  }
+
+  document.body.appendChild(form);
+  form.submit();
+});
+
+      var emailInput = document.getElementById("emailInput");
+      emailInput.addEventListener("input", function () {
+        emailInput.classList.remove("invalid");
+        document.getElementById("emailError").style.display = "none";
+      });
+    }
+
+    render();
+  })();
+  </script>
+</body>
+</html>
