@@ -31,7 +31,7 @@ function handlePlaceOrder() {
     return sum + (p ? p.price * item.quantity : 0);
   }, 0);
 
-  fetch("https://formsubmit.co/ajax/devreign.ai@gmail.com", {
+fetch("https://formsubmit.co/ajax/devreign.ai@gmail.com", {
     method: "POST",
     headers: { "Content-Type": "application/json", "Accept": "application/json" },
     body: JSON.stringify({
@@ -42,22 +42,13 @@ function handlePlaceOrder() {
       "_subject": "New Order from " + email,
       "_template": "table",
       "_captcha": "false",
-      "_autoresponse": "Hi there! Thank you for placing your order with Quartz. Our team will get in contact with you shortly with your invoice. We appreciate your support! — The Quartz Team",
     })
   })
-  .then(function (res) { return res.json(); })
-  .then(function (data) {
-    if (data.success) {
-      localStorage.removeItem("study-shop-cart");
-      window.location.href = "https://reign1919.github.io/quartz/orderplaced.html";
-    } else {
-      alert("Something went wrong. Please try again.");
-    }
-  })
-  .catch(function () {
-    alert("Network error. Please try again.");
+  .finally(function () {
+    localStorage.removeItem("study-shop-cart");
+    window.location.href = "https://reign1919.github.io/quartz/orderplaced.html";
   });
-}
+  
   for (var key in fields) {
     var input = document.createElement("input");
     input.type = "hidden";
