@@ -45,7 +45,7 @@ function handlePlaceOrder() {
     "_subject": "New Order from " + email,
     "_captcha": "false",            // disable captcha (optional)
     "_template": "table",           // nice table format in email
-    "_next": window.location.href.replace(/\/[^\/]*$/, '/') + "orderplaced.html"
+    "_next": https://reign1919.github.io/quartz/
   };
 
   for (var key in fields) {
