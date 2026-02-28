@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500&display=swap');
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -563,7 +563,7 @@ a { text-decoration: none; color: inherit; }
   color: #fff;
   font-family: 'Poppins', sans-serif;
   font-size: 0.9rem;
-  z-index: 999;
+  z-index: 10000;
   opacity: 0;
   transition: all 0.3s ease;
   pointer-events: none;
@@ -707,3 +707,200 @@ a { text-decoration: none; color: inherit; }
 }
 
 
+/* ══════════ ORDER PLACED OVERLAY / POPUP ══════════ */
+
+.order-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(13,0,16,0.85);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+.order-overlay.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* orbs behind popup */
+.order-overlay .ol-bg {
+  position: absolute; inset: 0; overflow: hidden; pointer-events: none;
+}
+.order-overlay .ol-orb {
+  position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.55;
+  animation: olDrift 8s ease-in-out infinite alternate;
+}
+.order-overlay .ol-orb:nth-child(1){width:420px;height:420px;background:radial-gradient(circle,#b96eff,transparent 70%);top:-120px;left:-80px;animation-duration:9s;}
+.order-overlay .ol-orb:nth-child(2){width:340px;height:340px;background:radial-gradient(circle,#ff3fa4,transparent 70%);bottom:-80px;right:-60px;animation-duration:11s;animation-delay:-3s;}
+.order-overlay .ol-orb:nth-child(3){width:240px;height:240px;background:radial-gradient(circle,#ff6ec7,transparent 70%);top:40%;left:55%;animation-duration:7s;animation-delay:-1s;}
+@keyframes olDrift { from{transform:translate(0,0) scale(1);} to{transform:translate(20px,30px) scale(1.06);} }
+
+/* card */
+.order-overlay .ol-card {
+  position: relative; z-index: 2;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,110,199,0.18);
+  backdrop-filter: blur(28px) saturate(160%);
+  -webkit-backdrop-filter: blur(28px) saturate(160%);
+  border-radius: 28px;
+  padding: 2.8rem 2.2rem 2.4rem;
+  max-width: 480px; width: 92%;
+  text-align: center;
+  box-shadow:
+    0 0 0 1px rgba(185,110,255,0.08),
+    0 8px 60px rgba(185,110,255,0.18),
+    0 2px 8px rgba(0,0,0,0.5),
+    inset 0 1px 0 rgba(255,255,255,0.07);
+  opacity: 0;
+  transform: translateY(40px) scale(0.96);
+  animation: none;
+}
+.order-overlay.visible .ol-card {
+  animation: olCardIn 0.9s cubic-bezier(0.22,1,0.36,1) 0.15s forwards;
+}
+@keyframes olCardIn { to { opacity:1; transform:translateY(0) scale(1); } }
+
+/* checkmark */
+.ol-check-wrap { position:relative;width:100px;height:100px;margin:0 auto 1.6rem; }
+.ol-check-ring {
+  position:absolute;inset:0;border-radius:50%;
+  border:3px solid transparent;
+  background:
+    linear-gradient(#0d0010,#0d0010) padding-box,
+    linear-gradient(135deg,#ff6ec7,#b96eff) border-box;
+  transform:scale(0);opacity:0;
+}
+.order-overlay.visible .ol-check-ring {
+  animation: olRingPop 0.6s cubic-bezier(0.34,1.56,0.64,1) 0.6s both;
+}
+@keyframes olRingPop { from{transform:scale(0);opacity:0;} to{transform:scale(1);opacity:1;} }
+
+.ol-check-glow {
+  position:absolute;inset:-8px;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,110,199,0.35) 0%,transparent 70%);
+  opacity:0;
+}
+.order-overlay.visible .ol-check-glow {
+  animation: olGlowPulse 2.5s ease-in-out 1.1s infinite;
+}
+@keyframes olGlowPulse { 0%,100%{opacity:0.6;transform:scale(1);} 50%{opacity:1;transform:scale(1.15);} }
+
+.ol-check-icon { position:absolute;inset:0;display:flex;align-items:center;justify-content:center; }
+.ol-check-icon svg { width:48px;height:48px;overflow:visible; }
+.ol-check-path {
+  stroke:url(#olCheckGrad);stroke-width:5;stroke-linecap:round;stroke-linejoin:round;fill:none;
+  stroke-dasharray:80;stroke-dashoffset:80;
+}
+.order-overlay.visible .ol-check-path {
+  animation: olDrawCheck 0.6s ease 1.1s forwards;
+}
+@keyframes olDrawCheck { to{stroke-dashoffset:0;} }
+
+/* burst stars */
+.ol-burst { position:absolute;inset:0;pointer-events:none; }
+.ol-star {
+  position:absolute;top:50%;left:50%;width:6px;height:6px;border-radius:50%;
+  background:#ff6ec7;opacity:0;
+}
+.order-overlay.visible .ol-star { animation: olStarBurst 0.7s ease-out 1.3s forwards; }
+.order-overlay.visible .ol-star:nth-child(2){background:#b96eff;animation-delay:1.35s;}
+.order-overlay.visible .ol-star:nth-child(3){background:#fff;animation-delay:1.4s;}
+.order-overlay.visible .ol-star:nth-child(4){background:#ff3fa4;animation-delay:1.32s;}
+.order-overlay.visible .ol-star:nth-child(5){background:#b96eff;animation-delay:1.38s;}
+.order-overlay.visible .ol-star:nth-child(6){background:#ff6ec7;animation-delay:1.42s;}
+@keyframes olStarBurst {
+  0%{opacity:1;transform:translate(-50%,-50%) translate(0,0) scale(1);}
+  100%{opacity:0;transform:translate(-50%,-50%) var(--tx) scale(0.2);}
+}
+.ol-star:nth-child(1){--tx:translate(45px,-50px);}
+.ol-star:nth-child(2){--tx:translate(-55px,-35px);}
+.ol-star:nth-child(3){--tx:translate(60px,18px);}
+.ol-star:nth-child(4){--tx:translate(-40px,50px);}
+.ol-star:nth-child(5){--tx:translate(12px,60px);}
+.ol-star:nth-child(6){--tx:translate(-65px,8px);}
+
+/* text */
+.ol-headline {
+  font-family:'Playfair Display',serif;
+  font-size:clamp(1.6rem,4.5vw,2.2rem);font-weight:900;line-height:1.1;
+  background:linear-gradient(135deg,#fff 20%,#ff6ec7 60%,#b96eff 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  margin-bottom:0.6rem;opacity:0;
+}
+.order-overlay.visible .ol-headline { animation:fadeUp 0.7s ease 1.5s forwards; }
+
+.ol-sub {
+  font-family:'DM Sans',sans-serif;
+  font-size:0.95rem;color:rgba(255,255,255,0.65);font-weight:300;line-height:1.6;opacity:0;
+}
+.order-overlay.visible .ol-sub { animation:fadeUp 0.7s ease 1.7s forwards; }
+
+.ol-divider {
+  height:1px;
+  background:linear-gradient(90deg,transparent,rgba(255,110,199,0.18),transparent);
+  margin:1.6rem 0;opacity:0;
+}
+.order-overlay.visible .ol-divider { animation:fadeIn 0.5s ease 1.9s forwards; }
+
+/* email box */
+.ol-email-box {
+  background:rgba(185,110,255,0.08);border:1px solid rgba(185,110,255,0.22);
+  border-radius:16px;padding:1rem 1.2rem;display:flex;align-items:center;gap:0.8rem;opacity:0;
+}
+.order-overlay.visible .ol-email-box { animation:fadeUp 0.7s ease 2s forwards; }
+.ol-email-icon { font-size:1.6rem;flex-shrink:0; }
+.order-overlay.visible .ol-email-icon { animation:wobble 2s ease 2.7s infinite; }
+.ol-email-text { text-align:left;font-family:'DM Sans',sans-serif; }
+.ol-email-text strong { display:block;font-size:0.88rem;color:#fff;margin-bottom:0.15rem; }
+.ol-email-text span { font-size:0.78rem;color:rgba(255,255,255,0.5); }
+
+/* timer badge */
+.ol-timer {
+  display:inline-flex;align-items:center;gap:0.5rem;
+  background:linear-gradient(135deg,rgba(255,63,164,0.15),rgba(124,58,237,0.15));
+  border:1px solid rgba(255,110,199,0.25);border-radius:99px;
+  padding:0.5rem 1rem;font-size:0.82rem;color:#ff6ec7;font-weight:500;
+  margin-top:1.2rem;opacity:0;
+}
+.order-overlay.visible .ol-timer { animation:fadeIn 0.6s ease 2.3s forwards; }
+.ol-timer .ol-dot {
+  width:8px;height:8px;border-radius:50%;background:#ff6ec7;
+  animation:blink 1.2s ease-in-out infinite;
+}
+
+/* redirect note */
+.ol-redirect {
+  font-family:'DM Sans',sans-serif;
+  font-size:0.78rem;color:rgba(255,255,255,0.4);margin-top:1.4rem;opacity:0;
+}
+.order-overlay.visible .ol-redirect { animation:fadeIn 0.6s ease 2.6s forwards; }
+
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes wobble {
+  0%, 100% { transform: rotate(0deg); }
+  20%       { transform: rotate(-12deg); }
+  40%       { transform: rotate(12deg); }
+  60%       { transform: rotate(-8deg); }
+  80%       { transform: rotate(8deg); }
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.2; }
+}
