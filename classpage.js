@@ -1,17 +1,29 @@
+function initClassPage(products) {
+  var grid = document.getElementById("productGrid");
+  var sortSelect = document.getElementById("sortSelect");
+  var badge = document.getElementById("cartBadge");
+
+  console.log("initClassPage called with", products.length, "products"); // Debug
+  console.log("Grid element:", grid); // Debug
+
+// In your classpage.js or cartpage.js — replace the existing place order handler
+
 function handlePlaceOrder() {
-  var emailInput = document.getElementById("emailInput");
+  var emailInput = document.getElementById("emailInput"); // your email input
   var email = emailInput.value.trim();
   var emailError = document.getElementById("emailError");
 
+  // Validate email
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     emailError.style.display = "block";
     return;
   }
   emailError.style.display = "none";
 
+  // Build product summary from cart
   var cart = JSON.parse(localStorage.getItem("study-shop-cart") || "[]");
   var productLines = cart.map(function (item) {
-    var product = findProduct(item.productId);
+    var product = findProduct(item.productId); // uses your existing findProduct from products.js
     if (!product) return "";
     return product.name + " (Class " + product.classLevel + ") x" + item.quantity + " — ₹" + (product.price * item.quantity).toFixed(2);
   }).filter(Boolean).join("\n");
@@ -21,36 +33,33 @@ function handlePlaceOrder() {
     return sum + (p ? p.price * item.quantity : 0);
   }, 0);
 
-  var formData = new FormData();
-  formData.append("Customer Email", email);
-  formData.append("Products Ordered", productLines);
-  formData.append("Grand Total", "₹" + (total + 5).toFixed(2) + " (includes ₹5 service charge)");
-  formData.append("_subject", "New Order from " + email);
-  formData.append("_captcha", "false");
-  formData.append("_template", "table");
+  // Create a hidden form and POST to FormSubmit
+  var form = document.createElement("form");
+  form.method = "POST";
+  form.action = "https://formsubmit.co/devreign.ai@gmail.com";
 
-  fetch("https://formsubmit.co/ajax/devreign.ai@gmail.com", {
-    method: "POST",
-    body: formData
-  })
-  .then(function (res) { return res.json(); })
-  .then(function (data) {
-    if (data.success) {
-      clearCart();
-      window.location.href = "orderplaced.html";
-    } else {
-      alert("Something went wrong. Please try again.");
-    }
-  })
-  .catch(function () {
-    alert("Network error. Please check your connection and try again.");
-  });
+  var fields = {
+    "Customer Email": email,
+    "Products Ordered": productLines,
+    "Grand Total": "₹" + (total + 5).toFixed(2) + " (includes ₹5 service charge)",
+    "_subject": "New Order from " + email,
+    "_captcha": "false",            // disable captcha (optional)
+    "_template": "table",           // nice table format in email
+    "_next": "https://quartz-gray.vercel.app/orderplaced.html" // redirect back after submit
+  };
+  
+  for (var key in fields) {
+    var input = document.createElement("input");
+    input.type = "hidden";
+    input.name = key;
+    input.value = fields[key];
+    form.appendChild(input);
+  }
+
+  document.body.appendChild(form);
+  form.submit();
 }
 
-function initClassPage(products) {
-  var grid = document.getElementById("productGrid");
-  var sortSelect = document.getElementById("sortSelect");
-  var badge = document.getElementById("cartBadge");
 
   function updateBadge() {
     badge.textContent = getTotalItems();
@@ -64,48 +73,75 @@ function initClassPage(products) {
       card.className = "glass-card product-card";
 
       var actionsHTML;
-      if (qty > 0) {
+      if (qty === 0) {
         actionsHTML =
-          '<div class="qty-controls">' +
-            '<button class="qty-btn" onclick="decreaseQty(\'' + p.id + '\');location.reload()">−</button>' +
-            '<span class="qty-num">' + qty + '</span>' +
-            '<button class="qty-btn" onclick="addToCart(\'' + p.id + '\');location.reload()">+</button>' +
-          '</div>';
+          '<button class="icon-btn" data-add="' + p.id + '" title="Add to cart">🛒</button>';
       } else {
         actionsHTML =
-          '<button class="gradient-btn add-btn" onclick="addToCart(\'' + p.id + '\');location.reload()">Add to Cart</button>';
+          '<div class="qty-control">' +
+            '<button class="qty-btn" data-dec="' + p.id + '">−</button>' +
+            '<span class="qty-num">' + qty + '</span>' +
+            '<button class="qty-btn" data-inc="' + p.id + '">+</button>' +
+          '</div>';
       }
 
       card.innerHTML =
-        '<div class="product-image-area">' +
-          (p.hot ? '<span class="hot-badge">🔥 HOT</span>' : '') +
+        '<div class="product-image">' +
+          '<div>' +
+            '<h2>' + p.name + '</h2>' +
+            '<p>' + p.caption + '</p>' +
+            (p.hot ? '<span class="hot-badge">🔥 Hot Selling</span>' : '') +
+          '</div>' +
         '</div>' +
         '<div class="product-info">' +
-          '<h3>' + p.name + '</h3>' +
-          '<p class="caption">' + p.caption + '</p>' +
-          '<div class="price-row">' +
-            '<span class="price">₹' + p.price.toFixed(2) + '</span>' +
-            '<span class="old-price">₹' + p.oldPrice.toFixed(2) + '</span>' +
+          '<div>' +
+            '<span class="price-old">₹' + p.oldPrice.toFixed(2) + '</span><br>' +
+            '<span class="price-new">₹' + p.price.toFixed(2) + '</span>' +
           '</div>' +
-          actionsHTML +
+          '<div class="product-actions">' +
+            '<button class="icon-btn" title="Wishlist">♡</button>' +
+            actionsHTML +
+          '</div>' +
         '</div>';
 
       grid.appendChild(card);
     });
+
+    // Attach events
+    grid.querySelectorAll("[data-add]").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        addToCart(btn.getAttribute("data-add"));
+        render();
+      });
+    });
+    grid.querySelectorAll("[data-inc]").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        addToCart(btn.getAttribute("data-inc"));
+        render();
+      });
+    });
+    grid.querySelectorAll("[data-dec]").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        decreaseQty(btn.getAttribute("data-dec"));
+        render();
+      });
+    });
   }
 
-  function sortProducts(mode) {
-    var sorted = products.slice();
-    if (mode === "low") sorted.sort(function (a, b) { return a.price - b.price; });
-    else if (mode === "high") sorted.sort(function (a, b) { return b.price - a.price; });
-    else if (mode === "hot") sorted.sort(function (a, b) { return (b.hot ? 1 : 0) - (a.hot ? 1 : 0); });
-    renderCards(sorted);
+  function getSorted() {
+    var copy = products.slice();
+    var mode = sortSelect.value;
+    if (mode === "low") copy.sort(function (a, b) { return a.price - b.price; });
+    else if (mode === "high") copy.sort(function (a, b) { return b.price - a.price; });
+    else if (mode === "hot") copy.sort(function (a, b) { return (b.hot ? 1 : 0) - (a.hot ? 1 : 0); });
+    return copy;
   }
 
-  sortSelect.addEventListener("change", function () {
-    sortProducts(this.value);
-  });
+  function render() {
+    renderCards(getSorted());
+    updateBadge();
+  }
 
-  renderCards(products);
-  updateBadge();
+  sortSelect.addEventListener("change", render);
+  render();
 }
