@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Contribute — Earn from What You Know</title>
+  <link rel="stylesheet" href="contribute.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500&family=Bebas+Neue&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Ambient background particles -->
+  <div class="ambient">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+    <div class="grid-overlay"></div>
+    <div class="noise"></div>
+  </div>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="logo">
+      <span class="logo-mark">✦</span>
+      <span class="logo-text">devreign</span>
+    </div>
+    <div class="header-tag">Contributors Program</div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-eyebrow">
+      <span class="dot"></span>
+      <span>Now Accepting Contributions</span>
+      <span class="dot"></span>
+    </div>
+    <h1 class="hero-title">
+      Your Notes.<br/>
+      <em>Your Empire.</em>
+    </h1>
+    <p class="hero-sub">
+      Turn your study materials into a passive income stream. Upload your notes, guides, and PDFs — earn royalties every time a student uses them.
+    </p>
+    <div class="hero-pills">
+      <div class="pill">
+        <span class="pill-icon">💸</span>
+        Royalty Split
+      </div>
+      <div class="pill">
+        <span class="pill-icon">📚</span>
+        All Grades Welcome
+      </div>
+      <div class="pill">
+        <span class="pill-icon">🌐</span>
+        Reach Thousands
+      </div>
+    </div>
+    <a href="#contribute" class="hero-cta-link">
+      <button class="btn-scroll">
+        Start Contributing
+        <span class="btn-arrow">↓</span>
+      </button>
+    </a>
+  </section>
+
+  <!-- Value Props -->
+  <section class="value-props">
+    <div class="vp-card">
+      <div class="vp-num">01</div>
+      <h3>Earn Royalties</h3>
+      <p>Every download earns you money. We split revenue fairly — your work keeps paying even while you sleep.</p>
+    </div>
+    <div class="vp-card">
+      <div class="vp-num">02</div>
+      <h3>Help Students</h3>
+      <p>Your notes could be the breakthrough moment for someone who's been struggling. Real impact, real reach.</p>
+    </div>
+    <div class="vp-card">
+      <div class="vp-num">03</div>
+      <h3>Build a Legacy</h3>
+      <p>Your name on materials used across the country. Contributor credits, recognition, and a portfolio that stands out.</p>
+    </div>
+  </section>
+
+  <!-- Main Form -->
+  <section class="form-section" id="contribute">
+
+    <div class="form-header">
+      <p class="form-eyebrow">Step Into the Program</p>
+      <h2 class="form-title">Tell Us About You</h2>
+      <p class="form-desc">Fill in your details below. We'll draft an email you can send directly — add any extra notes before hitting send.</p>
+    </div>
+
+    <div class="form-card">
+      <div class="form-card-glow"></div>
+
+      <div class="form-grid">
+
+        <!-- Name -->
+        <div class="field-group full">
+          <label for="name">Full Name</label>
+          <div class="input-wrap">
+            <span class="input-icon">✦</span>
+            <input type="text" id="name" placeholder="e.g. Priya Sharma" autocomplete="off" />
+          </div>
+        </div>
+
+        <!-- Grade -->
+        <div class="field-group">
+          <label for="grade">Grade / Class</label>
+          <div class="input-wrap">
+            <span class="input-icon">◈</span>
+            <select id="grade">
+              <option value="" disabled selected>Select your grade</option>
+              <optgroup label="School">
+                <option value="Grade 6">Grade 6</option>
+                <option value="Grade 7">Grade 7</option>
+                <option value="Grade 8">Grade 8</option>
+                <option value="Grade 9">Grade 9</option>
+                <option value="Grade 10">Grade 10</option>
+              </optgroup>
+              <optgroup label="Post 10th">
+                <option value="Grade 11">Grade 11</option>
+                <option value="Grade 12">Grade 12</option>
+              </optgroup>
+              <optgroup label="College">
+                <option value="1st Year (College)">1st Year (College)</option>
+                <option value="2nd Year (College)">2nd Year (College)</option>
+                <option value="3rd Year (College)">3rd Year (College)</option>
+                <option value="4th Year (College)">4th Year (College)</option>
+              </optgroup>
+            </select>
+          </div>
+        </div>
+
+        <!-- Stream (conditional) -->
+        <div class="field-group" id="stream-group" style="display:none;">
+          <label for="stream">Stream / Branch</label>
+          <div class="input-wrap">
+            <span class="input-icon">◇</span>
+            <select id="stream">
+              <option value="" disabled selected>Select your stream</option>
+              <option value="Science (PCM)">Science — PCM</option>
+              <option value="Science (PCB)">Science — PCB</option>
+              <option value="Science (PCMB)">Science — PCMB</option>
+              <option value="Commerce">Commerce</option>
+              <option value="Arts / Humanities">Arts / Humanities</option>
+              <option value="Computer Science">Computer Science</option>
+              <option value="Engineering">Engineering</option>
+              <option value="Medical">Medical / Healthcare</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Materials -->
+        <div class="field-group full">
+          <label for="materials">Study Materials You Can Provide</label>
+          <div class="input-wrap textarea-wrap">
+            <span class="input-icon top">◉</span>
+            <textarea id="materials" rows="4" placeholder="e.g. Physics Chapter 1-5 notes (PDF), Chemistry formula sheets, Maths practice papers for Class 12 CBSE…"></textarea>
+          </div>
+          <p class="field-hint">Be specific — list subjects, topics, and format. PDFs preferred.</p>
+        </div>
+
+      </div>
+
+      <!-- CTA Button -->
+      <button class="submit-btn" id="submitBtn" onclick="openEmailDraft()">
+        <span class="btn-text">Compose My Application Email</span>
+        <span class="btn-shimmer"></span>
+        <span class="btn-icon-right">→</span>
+      </button>
+
+      <p class="form-note">This will open a pre-filled draft in your email client. You can review and add extra comments before sending.</p>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-logo">
+        <span class="logo-mark">✦</span> devreign.ai
+      </div>
+      <p class="footer-note">
+        Every contributor earns a royalty split on their materials. Your knowledge has value — let's make it count.
+      </p>
+      <p class="footer-copy">© 2025 Devreign. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="contribute.json" type="application/json" id="config-json"></script>
+  <script>
+    // Show/hide stream based on grade
+    const gradeEl = document.getElementById('grade');
+    const streamGroup = document.getElementById('stream-group');
+    const postTenthGrades = ['Grade 11','Grade 12','1st Year (College)','2nd Year (College)','3rd Year (College)','4th Year (College)'];
+
+    gradeEl.addEventListener('change', () => {
+      const isPostTenth = postTenthGrades.includes(gradeEl.value);
+      streamGroup.style.display = isPostTenth ? 'flex' : 'none';
+      if (!isPostTenth) document.getElementById('stream').value = '';
+    });
+
+    function openEmailDraft() {
+      const name = document.getElementById('name').value.trim();
+      const grade = gradeEl.value;
+      const stream = document.getElementById('stream').value;
+      const materials = document.getElementById('materials').value.trim();
+      const btn = document.getElementById('submitBtn');
+
+      // Validation
+      if (!name) return shake('name');
+      if (!grade) return shake('grade');
+      const isPostTenth = postTenthGrades.includes(grade);
+      if (isPostTenth && !stream) return shake('stream');
+      if (!materials) return shake('materials');
+
+      // Build email
+      let streamLine = isPostTenth ? `Stream: ${stream}\n` : '';
+      const body = `Hi Devreign Team,\n\nI'd like to contribute my study materials to the platform.\n\nName: ${name}\nGrade: ${grade}\n${streamLine}Materials I Can Provide:\n${materials}\n\n[Add any extra comments or questions here]\n\nLooking forward to joining the contributor program!\n\n${name}`;
+      const subject = `Contributor Application — ${name} (${grade})`;
+
+      const mailto = `mailto:devreign.ai@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      window.location.href = mailto;
+
+      // Animate button
+      btn.classList.add('success');
+      btn.querySelector('.btn-text').textContent = 'Opening your email…';
+      setTimeout(() => {
+        btn.classList.remove('success');
+        btn.querySelector('.btn-text').textContent = 'Compose My Application Email';
+      }, 3000);
+    }
+
+    function shake(id) {
+      const el = document.getElementById(id);
+      el.closest('.field-group').classList.add('shake');
+      el.focus();
+      setTimeout(() => el.closest('.field-group').classList.remove('shake'), 500);
+    }
+
+    // Subtle scroll reveal
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.vp-card, .form-card, .hero-pills .pill').forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>

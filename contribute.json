@@ -1,0 +1,57 @@
+{
+  "meta": {
+    "project": "Devreign Contributors Program",
+    "version": "1.0.0",
+    "description": "Configuration for the Devreign study materials contributor CTA page"
+  },
+  "contact": {
+    "email": "devreign.ai@gmail.com",
+    "program": "Contributors Program"
+  },
+  "emailTemplate": {
+    "subjectFormat": "Contributor Application — {name} ({grade})",
+    "bodyIntro": "Hi Devreign Team,\n\nI'd like to contribute my study materials to the platform.\n\n",
+    "bodyFields": ["Name", "Grade", "Stream", "Materials I Can Provide"],
+    "bodyOutro": "\n[Add any extra comments or questions here]\n\nLooking forward to joining the contributor program!\n\n{name}"
+  },
+  "grades": {
+    "school": ["Grade 6", "Grade 7", "Grade 8", "Grade 9", "Grade 10"],
+    "postTenth": ["Grade 11", "Grade 12"],
+    "college": ["1st Year (College)", "2nd Year (College)", "3rd Year (College)", "4th Year (College)"]
+  },
+  "postTenthGrades": ["Grade 11", "Grade 12", "1st Year (College)", "2nd Year (College)", "3rd Year (College)", "4th Year (College)"],
+  "streams": [
+    "Science (PCM)",
+    "Science (PCB)",
+    "Science (PCMB)",
+    "Commerce",
+    "Arts / Humanities",
+    "Computer Science",
+    "Engineering",
+    "Medical / Healthcare",
+    "Other"
+  ],
+  "royaltyProgram": {
+    "enabled": true,
+    "description": "Contributors earn a royalty split on every download of their materials.",
+    "highlights": [
+      "Passive income from existing notes",
+      "Royalty split on every download",
+      "Contributor credits and recognition",
+      "Growing student audience"
+    ]
+  },
+  "design": {
+    "theme": "obsidian-royale",
+    "colors": {
+      "primary": "#9b3fff",
+      "accent": "#ff3d8f",
+      "background": "#050407"
+    },
+    "fonts": {
+      "display": "Playfair Display",
+      "body": "DM Sans",
+      "alt": "Bebas Neue"
+    }
+  }
+}
