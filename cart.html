@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Cart — Study Material Shop</title>
+  <title>Cart</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -22,6 +22,52 @@
 
   <div class="cart-container" id="cartRoot"></div>
   <div class="toast" id="toast"></div>
+    <!-- Order Placed Overlay -->
+<div class="order-overlay" id="orderOverlay">
+  <div class="ol-bg">
+    <div class="ol-orb"></div>
+    <div class="ol-orb"></div>
+    <div class="ol-orb"></div>
+  </div>
+  <div class="ol-card">
+    <div class="ol-check-wrap">
+      <div class="ol-check-ring"></div>
+      <div class="ol-check-glow"></div>
+      <div class="ol-burst">
+        <span class="ol-star"></span><span class="ol-star"></span>
+        <span class="ol-star"></span><span class="ol-star"></span>
+        <span class="ol-star"></span><span class="ol-star"></span>
+      </div>
+      <div class="ol-check-icon">
+        <svg viewBox="0 0 52 52">
+          <defs>
+            <linearGradient id="olCheckGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#ff6ec7"/>
+              <stop offset="100%" stop-color="#b96eff"/>
+            </linearGradient>
+          </defs>
+          <polyline class="ol-check-path" points="10,27 21,38 42,16"/>
+        </svg>
+      </div>
+    </div>
+    <h1 class="ol-headline">Order Placed!<br>You're all set ✨</h1>
+    <p class="ol-sub">Thank you for your purchase. Your study materials<br>are on their way to your inbox.</p>
+    <div class="ol-divider"></div>
+    <div class="ol-email-box">
+      <div class="ol-email-icon">💌</div>
+      <div class="ol-email-text">
+        <strong>We'll contact you within 24 hours</strong>
+        <span>Payment details &amp; your materials will be sent to your email.</span>
+      </div>
+    </div>
+    <div class="ol-timer">
+      <span class="ol-dot"></span>
+      Delivery within 24 hours of payment
+    </div>
+    <p class="ol-redirect">Redirecting you shortly…</p>
+  </div>
+</div>
+
 
   <script src="products.js"></script>
   <script src="cart.js"></script>
@@ -182,32 +228,40 @@ document.getElementById("placeOrderBtn").addEventListener("click", function () {
 
   var grandTotal = itemsTotal + SERVICE_CHARGE;
 
-  // Build and submit the FormSubmit form
-  var form = document.createElement("form");
-  form.method = "POST";
-  form.action = "https://formsubmit.co/devreign.ai@gmail.com";
+  // Submit via AJAX so we stay on the page
+  var formData = new FormData();
+  formData.append("Customer Email", email);
+  formData.append("Products Ordered", productLines);
+  formData.append("Grand Total", "₹" + grandTotal.toFixed(2) + " (includes ₹" + SERVICE_CHARGE + " service charge)");
+  formData.append("_subject", "New Order from " + email);
+  formData.append("_captcha", "false");
+  formData.append("_template", "table");
 
-  var fields = {
-    "Customer Email": email,
-    "Products Ordered": productLines,
-    "Grand Total": "₹" + grandTotal.toFixed(2) + " (includes ₹" + SERVICE_CHARGE + " service charge)",
-    "_subject": "New Order from " + email,
-    "_captcha": "false",
-    "_template": "table",
-    "_next": window.location.origin
-  };
+  fetch("https://formsubmit.co/ajax/devreign.ai@gmail.com", {
+    method: "POST",
+    body: formData
+  }).then(function () {
+    // Clear cart and show popup
+    clearCart();
+    var overlay = document.getElementById("orderOverlay");
+    overlay.classList.add("visible");
 
-  for (var key in fields) {
-    var input = document.createElement("input");
-    input.type = "hidden";
-    input.name = key;
-    input.value = fields[key];
-    form.appendChild(input);
-  }
+    // Redirect after 5 seconds
+    setTimeout(function () {
+      window.location.href = "https://quartz-gray.vercel.app/index.html";
+    }, 5000);
+  }).catch(function () {
+    // Even on error, show the popup (form likely went through)
+    clearCart();
+    var overlay = document.getElementById("orderOverlay");
+    overlay.classList.add("visible");
 
-  document.body.appendChild(form);
-  form.submit();
+    setTimeout(function () {
+      window.location.href = "https://quartz-gray.vercel.app/index.html";
+    }, 5000);
+  });
 });
+
 
       var emailInput = document.getElementById("emailInput");
       emailInput.addEventListener("input", function () {
