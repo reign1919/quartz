@@ -10,7 +10,7 @@
   },
   "emailTemplate": {
     "subjectFormat": "Contributor Application — {name} ({grade})",
-    "bodyIntro": "Hi Devreign Team,\n\nI'd like to contribute my study materials to the platform.\n\n",
+    "bodyIntro": "Hi Quartz Team,\n\nI'd like to contribute my study materials to the platform.\n\n",
     "bodyFields": ["Name", "Grade", "Stream", "Materials I Can Provide"],
     "bodyOutro": "\n[Add any extra comments or questions here]\n\nLooking forward to joining the contributor program!\n\n{name}"
   },

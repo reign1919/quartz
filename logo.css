@@ -1,0 +1,147 @@
+/* ============================================================
+   LOGO INTEGRATION — quartz-logo.svg
+   Drop these styles into your existing style.css / contribute.css
+   ============================================================ */
+
+/* ── 1. SHARED BASE ─────────────────────────────────────────
+   Used everywhere the logo appears.
+   The <img> tag should be:
+     <img src="quartz-logo.svg" class="quartz-logo" alt="Quartz">
+   ─────────────────────────────────────────────────────────── */
+
+.quartz-logo {
+  display: block;
+  object-fit: contain;
+  flex-shrink: 0;
+  /* Gentle idle rotation + subtle glow pulse */
+  animation: logo-idle 6s ease-in-out infinite alternate;
+  filter:
+    drop-shadow(0 0 8px rgba(155, 63, 255, 0.55))
+    drop-shadow(0 0 24px rgba(255, 61, 143, 0.25));
+  transition: filter 0.4s ease, transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.quartz-logo:hover {
+  filter:
+    drop-shadow(0 0 14px rgba(155, 63, 255, 0.85))
+    drop-shadow(0 0 40px rgba(255, 61, 143, 0.45))
+    drop-shadow(0 0 80px rgba(155, 63, 255, 0.2));
+  transform: scale(1.08) rotate(-4deg);
+}
+
+@keyframes logo-idle {
+  0%   { filter: drop-shadow(0 0 6px rgba(155,63,255,0.5))  drop-shadow(0 0 20px rgba(255,61,143,0.2)); }
+  50%  { filter: drop-shadow(0 0 12px rgba(224,64,255,0.7)) drop-shadow(0 0 36px rgba(255,61,143,0.35)); }
+  100% { filter: drop-shadow(0 0 8px rgba(155,63,255,0.55)) drop-shadow(0 0 28px rgba(255,61,143,0.28)); }
+}
+
+
+/* ── 2. SWITCHER / TOP NAV ──────────────────────────────────
+   Add this inside .switcher, BEFORE the pills:
+     <a href="/" class="switcher-logo-link">
+       <img src="quartz-logo.svg" class="quartz-logo quartz-logo--nav" alt="Quartz">
+     </a>
+   ─────────────────────────────────────────────────────────── */
+
+.switcher-logo-link {
+  display: flex;
+  align-items: center;
+  padding: 0 6px 0 2px;
+  border-right: 1px solid rgba(155, 63, 255, 0.18);
+  margin-right: 2px;
+}
+
+.quartz-logo--nav {
+  width: 30px;
+  height: 30px;
+  /* Slightly calmer pulse at nav scale */
+  animation-duration: 8s;
+}
+
+
+/* ── 3. LANDING CARD ────────────────────────────────────────
+   Add this ABOVE the <h1> inside .landing-card:
+     <img src="quartz-logo.svg" class="quartz-logo quartz-logo--landing" alt="Quartz">
+   ─────────────────────────────────────────────────────────── */
+
+.quartz-logo--landing {
+  width: 72px;
+  height: 72px;
+  margin: 0 auto 1.4rem;
+  /* Slower, more majestic pulse on the hero */
+  animation-duration: 10s;
+}
+
+
+/* ── 4. CART PAGE HEADER ────────────────────────────────────
+   Add this BEFORE the <h1> inside .cart-header:
+     <img src="quartz-logo.svg" class="quartz-logo quartz-logo--cart-header" alt="Quartz">
+   ─────────────────────────────────────────────────────────── */
+
+.quartz-logo--cart-header {
+  width: 36px;
+  height: 36px;
+  margin-right: 4px;
+  animation-duration: 7s;
+  animation-delay: -2s;
+}
+
+
+/* ── 5. CONTRIBUTE PAGE HEADER ──────────────────────────────
+   Replace the existing .logo-mark emoji/text with:
+     <img src="quartz-logo.svg" class="quartz-logo quartz-logo--header" alt="">
+   inside the .logo flex container (before .logo-text span).
+   ─────────────────────────────────────────────────────────── */
+
+.quartz-logo--header {
+  width: 34px;
+  height: 34px;
+  animation-duration: 9s;
+  animation-delay: -1s;
+  /* Override the logo-mark glow so it doesn't double-up */
+  animation-name: logo-idle;
+}
+
+
+/* ── 6. CONTRIBUTE FOOTER ───────────────────────────────────
+   Add inside .footer-inner, above .footer-logo text:
+     <img src="quartz-logo.svg" class="quartz-logo quartz-logo--footer" alt="Quartz">
+   ─────────────────────────────────────────────────────────── */
+
+.quartz-logo--footer {
+  width: 44px;
+  height: 44px;
+  margin: 0 auto 1rem;
+  opacity: 0.65;
+  animation-duration: 12s;
+  animation-delay: -4s;
+}
+
+.quartz-logo--footer:hover {
+  opacity: 1;
+}
+
+
+/* ── 7. ORDER OVERLAY (success popup) ───────────────────────
+   Add as first child of .ol-card, above .ol-check-wrap:
+     <img src="quartz-logo.svg" class="quartz-logo quartz-logo--order" alt="">
+   The check animation already fires; this sits above it briefly.
+   ─────────────────────────────────────────────────────────── */
+
+.quartz-logo--order {
+  width: 48px;
+  height: 48px;
+  margin: 0 auto 1.2rem;
+  opacity: 0;
+  transform: scale(0.7) translateY(-10px);
+  transition: none;
+  /* Fires after the card-in animation settles */
+  animation: logo-order-in 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.9s forwards, logo-idle 8s ease-in-out 1.5s infinite alternate;
+}
+
+@keyframes logo-order-in {
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
