@@ -3,9 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Join the Quartz team!</title>
   <link rel="icon" type="image/svg+xml" href="quartz-logo.svg">
   <link rel="stylesheet" href="contribute.css" />
+  <link rel="stylesheet" href="logo.css" />
+  <link rel="stylesheet" href="style.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500&family=Bebas+Neue&display=swap" rel="stylesheet">
 </head>
@@ -24,10 +25,19 @@
   <header class="header">
     <div class="logo">
       <span class="logo-mark">✦</span>
-      <span class="logo-text">devreign</span>
+      <span class="logo-text">devreign | Quartz</span>
     </div>
     <div class="header-tag">Contributors Program</div>
   </header>
+
+    <div class="switcher">
+    <a href="/" class="switcher-logo-link">
+  <img src="quartz-logo.svg" class="quartz-logo quartz-logo--nav" alt="Quartz"></a>
+    <a href="class10.html" class="switch-pill">Class 10</a>
+    <a href="class11.html" class="switch-pill">Class 11</a>
+    <a href="contribute.html" class="switch-pill switch-pill-active">✦ Contribute</a>
+    <a href="verify.html" class="switch-pill-verified">✦ Verified</a>
+  </div>
 
   <!-- Hero Section -->
   <section class="hero">
@@ -182,12 +192,11 @@
   <footer class="footer">
     <div class="footer-inner">
       <div class="footer-logo">
-        <img src="quartz-logo.svg" class="quartz-logo quartz-logo--header" alt="">
       </div>
       <p class="footer-note">
         Every contributor earns a royalty split on their materials. Your knowledge has value — let's make it count.
       </p>
-      <p class="footer-copy">© 2025 Devreign. All rights reserved.</p>
+      <p class="footer-copy">© 2025 Quartz. All rights reserved.</p>
     </div>
   </footer>
 
@@ -220,7 +229,7 @@
 
       // Build email
       let streamLine = isPostTenth ? `Stream: ${stream}\n` : '';
-      const body = `Hi Devreign Team,\n\nI'd like to contribute my study materials to the platform.\n\nName: ${name}\nGrade: ${grade}\n${streamLine}Materials I Can Provide:\n${materials}\n\n[Add any extra comments or questions here]\n\nLooking forward to joining the contributor program!\n\n${name}`;
+      const body = `Hi Quartz Team,\n\nI'd like to contribute my study materials to the platform.\n\nName: ${name}\nGrade: ${grade}\n${streamLine}Materials I Can Provide:\n${materials}\n\n[Add any extra comments or questions here]\n\nLooking forward to joining the contributor program!\n\n${name}`;
       const subject = `Contributor Application — ${name} (${grade})`;
 
       const mailto = `mailto:devreign.ai@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
