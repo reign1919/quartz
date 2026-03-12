@@ -1,74 +1,109 @@
+
+
 function initClassPage(products) {
-  var grid = document.getElementById("productGrid");
+  var grid       = document.getElementById("productGrid");
   var sortSelect = document.getElementById("sortSelect");
-  var badge = document.getElementById("cartBadge");
+  var badge      = document.getElementById("cartBadge");
 
-  console.log("initClassPage called with", products.length, "products"); // Debug
-  console.log("Grid element:", grid); // Debug
+  /* ── Inject search bar above sort bar ─────────────────── */
 
-// In your classpage.js or cartpage.js — replace the existing place order handler
+  var sortBar = document.querySelector(".sort-bar");
+  if (sortBar) {
+    var searchWrap = document.createElement("div");
+    searchWrap.className = "search-wrap";
+    searchWrap.innerHTML =
+      '<span class="search-icon">🔍</span>' +
+      '<input ' +
+        'type="text" ' +
+        'id="searchInput" ' +
+        'class="search-input" ' +
+        'placeholder="Search notes, subjects, topics…" ' +
+        'autocomplete="off" ' +
+        'spellcheck="false" ' +
+      '/>' +
+      '<button class="search-clear" id="searchClear" title="Clear search">✕</button>';
 
-function handlePlaceOrder() {
-  var emailInput = document.getElementById("emailInput"); // your email input
-  var email = emailInput.value.trim();
-  var emailError = document.getElementById("emailError");
-
-  // Validate email
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    emailError.style.display = "block";
-    return;
-  }
-  emailError.style.display = "none";
-
-  // Build product summary from cart
-  var cart = JSON.parse(localStorage.getItem("study-shop-cart") || "[]");
-  var productLines = cart.map(function (item) {
-    var product = findProduct(item.productId); // uses your existing findProduct from products.js
-    if (!product) return "";
-    return product.name + " (Class " + product.classLevel + ") x" + item.quantity + " — ₹" + (product.price * item.quantity).toFixed(2);
-  }).filter(Boolean).join("\n");
-
-  var total = cart.reduce(function (sum, item) {
-    var p = findProduct(item.productId);
-    return sum + (p ? p.price * item.quantity : 0);
-  }, 0);
-
-  // Create a hidden form and POST to FormSubmit
-  var form = document.createElement("form");
-  form.method = "POST";
-  form.action = "https://formsubmit.co/devreign.ai@gmail.com";
-
-  var fields = {
-    "Customer Email": email,
-    "Products Ordered": productLines,
-    "Grand Total": "₹" + (total + 5).toFixed(2) + " (includes ₹5 service charge)",
-    "_subject": "New Order from " + email,
-    "_captcha": "false",            // disable captcha (optional)
-    "_template": "table",           // nice table format in email
-    "_next": "https://quartz-gray.vercel.app/orderplaced.html" // redirect back after submit
-  };
-  
-  for (var key in fields) {
-    var input = document.createElement("input");
-    input.type = "hidden";
-    input.name = key;
-    input.value = fields[key];
-    form.appendChild(input);
+    sortBar.parentNode.insertBefore(searchWrap, sortBar);
   }
 
-  document.body.appendChild(form);
-  form.submit();
-}
+  /* ── Inject results tag placeholder (shown when searching) */
 
+  var resultsTag = document.createElement("div");
+  resultsTag.id = "searchResultsTag";
+  resultsTag.style.display = "none";
+  if (sortBar) sortBar.parentNode.insertBefore(resultsTag, sortBar);
+
+  var searchInput = document.getElementById("searchInput");
+  var searchClear = document.getElementById("searchClear");
+
+  /* ── Search state ──────────────────────────────────────── */
+
+  var currentQuery = "";
+
+  function normalise(str) {
+    return str.toLowerCase().replace(/[^a-z0-9\s]/g, "").trim();
+  }
+
+  function matches(product, query) {
+    if (!query) return true;
+    var haystack = normalise(
+      product.name + " " +
+      product.caption + " " +
+      (product.classLevel ? "class " + product.classLevel : "")
+    );
+    var words = query.split(/\s+/).filter(Boolean);
+    return words.every(function (w) { return haystack.indexOf(w) !== -1; });
+  }
+
+  function highlight(text, query) {
+    if (!query) return text;
+    var words = query.trim().split(/\s+/).filter(Boolean);
+    var escaped = words.map(function (w) {
+      return w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    }).join("|");
+    var re = new RegExp("(" + escaped + ")", "gi");
+    return text.replace(re, '<mark class="search-highlight">$1</mark>');
+  }
+
+  /* ── Badge ─────────────────────────────────────────────── */
 
   function updateBadge() {
     badge.textContent = getTotalItems();
   }
 
+  /* ── Render ────────────────────────────────────────────── */
+
   function renderCards(list) {
     grid.innerHTML = "";
-    list.forEach(function (p) {
-      var qty = getQuantity(p.id);
+    var query    = normalise(currentQuery);
+    var filtered = list.filter(function (p) { return matches(p, query); });
+
+    /* Results tag */
+    var tag = document.getElementById("searchResultsTag");
+    if (query && tag) {
+      tag.style.display = "inline-flex";
+      tag.className = "search-results-tag";
+      tag.innerHTML =
+        '<span class="tag-count">' + filtered.length + '</span>' +
+        ' result' + (filtered.length !== 1 ? "s" : "") +
+        ' for <span class="tag-query">"' + currentQuery.trim() + '"</span>';
+    } else if (tag) {
+      tag.style.display = "none";
+    }
+
+    /* No results */
+    if (filtered.length === 0) {
+      grid.innerHTML =
+        '<div class="search-empty">' +
+          '<div class="search-empty-icon">🔎</div>' +
+          '<div class="search-empty-title">No results for "' + currentQuery.trim() + '"</div>' +
+          '<div class="search-empty-sub">Try a subject name, topic, or class number</div>' +
+        '</div>';
+      return;
+    }
+
+    filtered.forEach(function (p) {
+      var qty  = getQuantity(p.id);
       var card = document.createElement("div");
       card.className = "glass-card product-card";
 
@@ -85,11 +120,14 @@ function handlePlaceOrder() {
           '</div>';
       }
 
+      var displayName    = highlight(p.name,    currentQuery.trim());
+      var displayCaption = highlight(p.caption, currentQuery.trim());
+
       card.innerHTML =
         '<div class="product-image">' +
           '<div>' +
-            '<h2>' + p.name + '</h2>' +
-            '<p>' + p.caption + '</p>' +
+            '<h2>' + displayName + '</h2>' +
+            '<p>' + displayCaption + '</p>' +
             (p.hot ? '<span class="hot-badge">🔥 Hot Selling</span>' : '') +
           '</div>' +
         '</div>' +
@@ -99,7 +137,7 @@ function handlePlaceOrder() {
             '<span class="price-new">₹' + p.price.toFixed(2) + '</span>' +
           '</div>' +
           '<div class="product-actions">' +
-            '<button class="icon-btn" title="Wishlist">♡</button>' +
+            '<button class="icon-btn" data-wish="' + p.id + '" title="Add to wishlist">♡</button>' +
             actionsHTML +
           '</div>' +
         '</div>';
@@ -107,7 +145,7 @@ function handlePlaceOrder() {
       grid.appendChild(card);
     });
 
-    // Attach events
+    /* Cart events */
     grid.querySelectorAll("[data-add]").forEach(function (btn) {
       btn.addEventListener("click", function () {
         addToCart(btn.getAttribute("data-add"));
@@ -126,20 +164,68 @@ function handlePlaceOrder() {
         render();
       });
     });
+
+    /* Sync wishlist hearts */
+    if (typeof wishlist !== "undefined" && wishlist.syncHearts) {
+      wishlist.syncHearts();
+    }
   }
 
   function getSorted() {
     var copy = products.slice();
     var mode = sortSelect.value;
-    if (mode === "low") copy.sort(function (a, b) { return a.price - b.price; });
+    if (mode === "low")       copy.sort(function (a, b) { return a.price - b.price; });
     else if (mode === "high") copy.sort(function (a, b) { return b.price - a.price; });
-    else if (mode === "hot") copy.sort(function (a, b) { return (b.hot ? 1 : 0) - (a.hot ? 1 : 0); });
+    else if (mode === "hot")  copy.sort(function (a, b) { return (b.hot ? 1 : 0) - (a.hot ? 1 : 0); });
     return copy;
   }
 
   function render() {
     renderCards(getSorted());
     updateBadge();
+  }
+
+  /* ── Search events ─────────────────────────────────────── */
+
+  if (searchInput) {
+    searchInput.addEventListener("input", function () {
+      currentQuery = searchInput.value;
+      searchClear.classList.toggle("search-clear--visible", currentQuery.length > 0);
+      render();
+    });
+
+    /* Press "/" anywhere to jump to search */
+    document.addEventListener("keydown", function (e) {
+      if (
+        e.key === "/" &&
+        document.activeElement !== searchInput &&
+        document.activeElement.tagName !== "INPUT" &&
+        document.activeElement.tagName !== "TEXTAREA" &&
+        document.activeElement.tagName !== "SELECT"
+      ) {
+        e.preventDefault();
+        searchInput.focus();
+        searchInput.select();
+      }
+      /* Escape clears and blurs */
+      if (e.key === "Escape" && document.activeElement === searchInput) {
+        currentQuery = "";
+        searchInput.value = "";
+        searchClear.classList.remove("search-clear--visible");
+        render();
+        searchInput.blur();
+      }
+    });
+  }
+
+  if (searchClear) {
+    searchClear.addEventListener("click", function () {
+      currentQuery = "";
+      searchInput.value = "";
+      searchClear.classList.remove("search-clear--visible");
+      searchInput.focus();
+      render();
+    });
   }
 
   sortSelect.addEventListener("change", render);

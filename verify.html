@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="verify.css">
   <link rel="stylesheet" href="logo.css" />
+  <link rel="stylesheet" href="mobile.css" />
 </head>
 <body>
 
@@ -20,15 +21,31 @@
     <div class="hill"></div>
   </div>
 
+    <button class="hamburger-btn" aria-label="Menu">
+  <img src="quartz-logo.svg" alt="Menu" class="hamburger-logo" />
+  <span class="hamburger-label">Menu</span>
+</button>
+<div class="nav-overlay"></div>
+<nav class="mobile-nav">
+  <a href="index.html" class="mobile-nav-link">Home</a>
+  <a href="class10.html" class="mobile-nav-link">Class 10</a>
+  <a href="class11.html" class="mobile-nav-link">Class 11</a>
+  <a href="class12.html" class="mobile-nav-link">Class 12</a>
+  <a href="verify.html" class="mobile-nav-link verified">Verified</a>
+  <a href="contribute.html" class="mobile-nav-link">Contribute</a>
+</nav>
+
   <!-- ── SWITCHER NAV ── -->
   <nav class="switcher">
     <a href="/" class="switcher-logo-link">
       <img src="quartz-logo.svg" class="quartz-logo quartz-logo--nav" alt="Quartz">
     </a>
-    <a href="/class10.html"><button class="switch-pill">Class 10</button></a>
-    <a href="/class11.html"><button class="switch-pill">Class 11</button></a>
-    <a href="/contribute.html"><button class="switch-pill">Contribute</button></a>
-    <button class="switch-pill switch-pill-active">✦ Verified</button>
+    <a href="class10.html" class="switch-pill">Class 10</a>
+    <a href="class11.html" class="switch-pill">Class 11</a>
+    <a href="class12.html" class="switch-pill">Class 12</a>
+    <a href="competitive.html" class="switch-pill">Competitive</a>
+    <a href="contribute.html" class="switch-pill-verified">✦ Contribute</a>
+    <a href="verify.html" class="switch-pill-verified  switch-pill-active">✦ Verified</a>
   </nav>
 
   <!-- ── PAGE ── -->
@@ -195,4 +212,6 @@
   </main>
 
 </body>
+  <script src="hamburger.js"></script>
+  <script src="responsive.js"></script>
 </html>

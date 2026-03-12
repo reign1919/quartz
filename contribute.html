@@ -4,10 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <link rel="icon" type="image/svg+xml" href="quartz-logo.svg">
-  <title>Join Quartz!</title>
   <link rel="stylesheet" href="contribute.css" />
   <link rel="stylesheet" href="logo.css" />
   <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="mobile.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500&family=Bebas+Neue&display=swap" rel="stylesheet">
 </head>
@@ -31,12 +31,28 @@
     <div class="header-tag">Contributors Program</div>
   </header>
 
+  <button class="hamburger-btn" aria-label="Menu">
+  <img src="quartz-logo.svg" alt="Menu" class="hamburger-logo" />
+  <span class="hamburger-label">Menu</span>
+</button>
+<div class="nav-overlay"></div>
+<nav class="mobile-nav">
+  <a href="index.html" class="mobile-nav-link">Home</a>
+  <a href="class10.html" class="mobile-nav-link">Class 10</a>
+  <a href="class11.html" class="mobile-nav-link">Class 11</a>
+  <a href="class12.html" class="mobile-nav-link">Class 12</a>
+  <a href="verify.html" class="mobile-nav-link verified">Verified</a>
+  <a href="contribute.html" class="mobile-nav-link">Contribute</a>
+</nav>
+
     <div class="switcher">
     <a href="/" class="switcher-logo-link">
   <img src="quartz-logo.svg" class="quartz-logo quartz-logo--nav" alt="Quartz"></a>
     <a href="class10.html" class="switch-pill">Class 10</a>
     <a href="class11.html" class="switch-pill">Class 11</a>
-    <a href="contribute.html" class="switch-pill switch-pill-active">✦ Contribute</a>
+    <a href="class12.html" class="switch-pill">Class 12</a>
+    <a href="competitive.html" class="switch-pill">Competitive</a>
+    <a href="contribute.html" class="switch-pill-verified switch-pill-active">✦ Contribute</a>
     <a href="verify.html" class="switch-pill-verified">✦ Verified</a>
   </div>
 
@@ -202,6 +218,9 @@
   </footer>
 
   <script src="contribute.json" type="application/json" id="config-json"></script>
+  <script src="hamburger.js"></script>
+  <script src="responsive.js"></script>
+  
   <script>
     // Show/hide stream based on grade
     const gradeEl = document.getElementById('grade');

@@ -1,0 +1,18 @@
+{
+  "QTZ-A1B2C3": {
+    "product": "Quartz Pro License",
+    "qty": 1,
+    "amount": "₹499",
+    "date": "March 12, 2026",
+    "status": "pending_payment",
+    "customer": "John Doe"
+  },
+  "QTZ-X9Y8Z7": {
+    "product": "Quartz Standard License",
+    "qty": 2,
+    "amount": "₹799",
+    "date": "March 12, 2026",
+    "status": "pending_payment",
+    "customer": "Jane Smith"
+  }
+}

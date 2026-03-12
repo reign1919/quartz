@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="quartz-logo.svg">
+  <title>Quartz — Order Lookup</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Raleway:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --purple: #b44fff;
+      --pink: #ff40a0;
+      --deep: #0a0a0f;
+      --card: #12091e;
+      --border: rgba(138,43,226,0.25);
+      --glow: rgba(180,79,255,0.15);
+    }
+
+    body {
+      background: var(--deep);
+      font-family: 'Raleway', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    .orb { position: fixed; border-radius: 50%; filter: blur(80px); pointer-events: none; z-index: 0; }
+    .orb-1 { width: 500px; height: 500px; background: radial-gradient(circle, rgba(138,43,226,0.12), transparent 70%); top: -150px; left: -150px; }
+    .orb-2 { width: 400px; height: 400px; background: radial-gradient(circle, rgba(255,40,160,0.08), transparent 70%); bottom: -100px; right: -100px; }
+    .orb-3 { width: 300px; height: 300px; background: radial-gradient(circle, rgba(80,0,180,0.1), transparent 70%); top: 50%; left: 60%; }
+
+    .particles { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+    .particle { position: absolute; width: 2px; height: 2px; border-radius: 50%; background: rgba(180,79,255,0.4); animation: float linear infinite; }
+    @keyframes float {
+      0% { transform: translateY(100vh) translateX(0); opacity: 0; }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      100% { transform: translateY(-100px) translateX(30px); opacity: 0; }
+    }
+
+    .card {
+      position: relative; z-index: 1; width: 100%; max-width: 440px; margin: 20px;
+      background: linear-gradient(145deg, #16092a 0%, #0d0d1a 60%, #0a0a0f 100%);
+      border: 1px solid var(--border); border-radius: 24px; padding: 48px 40px 44px;
+      text-align: center;
+      box-shadow: 0 0 80px rgba(138,43,226,0.12), 0 40px 80px rgba(0,0,0,0.5), inset 0 0 40px rgba(138,43,226,0.03);
+      animation: cardIn 0.8s cubic-bezier(0.16,1,0.3,1) both;
+    }
+    @keyframes cardIn {
+      from { opacity: 0; transform: translateY(30px) scale(0.97); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .card::before {
+      content: ''; position: absolute; top: 0; left: 10%; right: 10%; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(180,79,255,0.7), rgba(255,64,160,0.5), rgba(180,79,255,0.7), transparent);
+      border-radius: 1px;
+    }
+
+    .logo-wrap {
+      width: 80px; height: 80px; margin: 0 auto 22px; padding: 3px; border-radius: 50%;
+      background: linear-gradient(135deg, #b44fff, #ff40a0, #7000ff);
+      box-shadow: 0 0 30px rgba(180,79,255,0.5), 0 0 60px rgba(180,79,255,0.15);
+      animation: pulse 3s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%,100% { box-shadow: 0 0 30px rgba(180,79,255,0.5), 0 0 60px rgba(180,79,255,0.15); }
+      50% { box-shadow: 0 0 45px rgba(180,79,255,0.7), 0 0 80px rgba(180,79,255,0.25); }
+    }
+    .logo-wrap img { width: 100%; height: 100%; border-radius: 50%; display: block; }
+
+    h1 {
+      font-family: 'Cinzel', serif; font-size: 24px; font-weight: 700; letter-spacing: 5px;
+      background: linear-gradient(135deg, #d580ff, #ff80cc, #b44fff);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      text-transform: uppercase; margin-bottom: 6px;
+    }
+    .subtitle { font-size: 11px; letter-spacing: 3px; color: rgba(180,79,255,0.5); text-transform: uppercase; font-weight: 500; margin-bottom: 36px; }
+    .divider { height: 1px; background: linear-gradient(90deg, transparent, rgba(138,43,226,0.25), transparent); margin-bottom: 32px; }
+    .gem-dots { display: flex; justify-content: center; gap: 5px; margin-bottom: 28px; }
+    .gem-dot { width: 3px; height: 3px; border-radius: 50%; background: rgba(180,79,255,0.35); }
+    .gem-dot.lg { width: 5px; height: 5px; background: rgba(180,79,255,0.55); }
+
+    .field-label { font-size: 9px; letter-spacing: 3px; color: rgba(180,79,255,0.5); text-transform: uppercase; font-weight: 600; text-align: left; margin-bottom: 10px; }
+    .input-wrap { position: relative; margin-bottom: 14px; }
+    .input-wrap input {
+      width: 100%; background: rgba(138,43,226,0.06); border: 1px solid rgba(138,43,226,0.25);
+      border-radius: 12px; padding: 14px 18px; font-family: 'Raleway', sans-serif;
+      font-size: 15px; font-weight: 500; color: #e8d5ff; letter-spacing: 2px; outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+    }
+    .input-wrap input::placeholder { color: rgba(180,79,255,0.25); letter-spacing: 1px; font-size: 13px; }
+    .input-wrap input:focus {
+      border-color: rgba(180,79,255,0.6); background: rgba(138,43,226,0.1);
+      box-shadow: 0 0 20px rgba(180,79,255,0.12), inset 0 0 10px rgba(138,43,226,0.04);
+    }
+
+    .btn {
+      width: 100%; padding: 15px;
+      background: linear-gradient(135deg, #7000cc, #b44fff, #cc0080);
+      border: none; border-radius: 12px; font-family: 'Cinzel', serif;
+      font-size: 13px; font-weight: 600; letter-spacing: 3px; color: #fff;
+      cursor: pointer; margin-top: 8px; position: relative; overflow: hidden;
+      transition: transform 0.15s, box-shadow 0.2s;
+      box-shadow: 0 4px 24px rgba(138,43,226,0.35);
+    }
+    .btn::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(255,255,255,0.12), transparent); opacity: 0; transition: opacity 0.2s; }
+    .btn:hover { transform: translateY(-1px); box-shadow: 0 8px 32px rgba(138,43,226,0.5); }
+    .btn:hover::before { opacity: 1; }
+    .btn:active { transform: translateY(1px); }
+
+    .error-msg {
+      margin-top: 16px; padding: 12px 16px; background: rgba(255,40,40,0.08);
+      border: 1px solid rgba(255,40,40,0.2); border-radius: 10px; font-size: 12px;
+      color: rgba(255,120,120,0.8); letter-spacing: 0.5px; display: none; animation: shake 0.3s ease;
+    }
+    @keyframes shake { 0%,100% { transform: translateX(0); } 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+    .error-msg.visible { display: block; }
+
+    .footer-note { margin-top: 28px; font-size: 10px; color: rgba(138,43,226,0.3); letter-spacing: 1px; }
+    .footer-note a { color: rgba(180,79,255,0.4); text-decoration: none; }
+
+    /* ── Order Details ── */
+    #order-view, #eula-view { display: none; }
+    #search-view { display: block; }
+
+    .order-header { margin-bottom: 24px; }
+    .order-id-badge {
+      display: inline-block; padding: 6px 16px; border-radius: 8px; font-size: 11px;
+      letter-spacing: 2px; font-weight: 600; color: #e8d5ff;
+      background: rgba(138,43,226,0.12); border: 1px solid rgba(138,43,226,0.3);
+      margin-bottom: 16px;
+    }
+    .status-badge {
+      display: inline-block; padding: 5px 14px; border-radius: 20px; font-size: 10px;
+      letter-spacing: 2px; text-transform: uppercase; font-weight: 600;
+    }
+    .status-pending { background: rgba(255,170,0,0.1); border: 1px solid rgba(255,170,0,0.3); color: #ffaa00; }
+    .status-paid { background: rgba(0,255,100,0.1); border: 1px solid rgba(0,255,100,0.3); color: #00ff64; }
+
+    .detail-grid { text-align: left; margin: 24px 0; }
+    .detail-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 12px 0; border-bottom: 1px solid rgba(138,43,226,0.1);
+    }
+    .detail-row:last-child { border-bottom: none; }
+    .detail-key { font-size: 10px; letter-spacing: 2px; color: rgba(180,79,255,0.5); text-transform: uppercase; font-weight: 600; }
+    .detail-value { font-size: 14px; color: #e8d5ff; font-weight: 500; letter-spacing: 1px; }
+    .detail-value.amount {
+      font-family: 'Cinzel', serif; font-size: 20px;
+      background: linear-gradient(135deg, #d580ff, #ff80cc); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+
+    .qr-section { margin-top: 24px; }
+    .qr-section img { width: 140px; height: 140px; border-radius: 12px; border: 1px solid rgba(138,43,226,0.25); }
+    .qr-label { font-size: 9px; letter-spacing: 2px; color: rgba(180,79,255,0.4); text-transform: uppercase; margin-top: 10px; }
+
+    .btn-back { margin-top: 20px; background: rgba(138,43,226,0.1); border: 1px solid rgba(138,43,226,0.25); box-shadow: none; }
+    .btn-back:hover { background: rgba(138,43,226,0.18); box-shadow: none; transform: translateY(-1px); }
+
+    /* ── EULA Modal Overlay ── */
+    .eula-overlay {
+      display: none;
+      position: fixed; inset: 0; z-index: 100;
+      background: rgba(5, 3, 10, 0.85);
+      backdrop-filter: blur(12px);
+      align-items: center; justify-content: center;
+    }
+    .eula-overlay.visible { display: flex; }
+
+    .eula-card {
+      width: 90%; max-width: 520px; max-height: 85vh;
+      background: linear-gradient(145deg, #16092a 0%, #0d0d1a 60%, #0a0a0f 100%);
+      border: 1px solid var(--border); border-radius: 24px; padding: 40px 36px 36px;
+      position: relative; display: flex; flex-direction: column;
+      box-shadow: 0 0 120px rgba(138,43,226,0.2), 0 40px 80px rgba(0,0,0,0.6);
+      animation: cardIn 0.5s cubic-bezier(0.16,1,0.3,1) both;
+    }
+    .eula-card::before {
+      content: ''; position: absolute; top: 0; left: 10%; right: 10%; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(180,79,255,0.7), rgba(255,64,160,0.5), rgba(180,79,255,0.7), transparent);
+    }
+
+    .eula-title {
+      font-family: 'Cinzel', serif; font-size: 16px; font-weight: 700; letter-spacing: 4px;
+      background: linear-gradient(135deg, #d580ff, #ff80cc, #b44fff);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      text-transform: uppercase; text-align: center; margin-bottom: 6px;
+    }
+    .eula-sub {
+      font-size: 10px; letter-spacing: 2px; color: rgba(180,79,255,0.4);
+      text-transform: uppercase; text-align: center; margin-bottom: 20px;
+    }
+
+    .eula-scroll {
+      flex: 1; overflow-y: auto; max-height: 45vh;
+      padding: 20px; margin-bottom: 20px;
+      background: rgba(138,43,226,0.04); border: 1px solid rgba(138,43,226,0.15);
+      border-radius: 12px; font-size: 11px; line-height: 1.7;
+      color: rgba(200,180,230,0.7); letter-spacing: 0.3px; white-space: pre-wrap;
+    }
+    .eula-scroll::-webkit-scrollbar { width: 4px; }
+    .eula-scroll::-webkit-scrollbar-track { background: transparent; }
+    .eula-scroll::-webkit-scrollbar-thumb { background: rgba(138,43,226,0.3); border-radius: 4px; }
+
+    .eula-checkbox-wrap {
+      display: flex; align-items: center; gap: 10px; margin-bottom: 18px;
+    }
+    .eula-checkbox-wrap input[type="checkbox"] {
+      appearance: none; width: 18px; height: 18px; border-radius: 5px;
+      border: 1px solid rgba(138,43,226,0.4); background: rgba(138,43,226,0.08);
+      cursor: pointer; position: relative; flex-shrink: 0;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .eula-checkbox-wrap input[type="checkbox"]:checked {
+      background: linear-gradient(135deg, #7000cc, #b44fff);
+      border-color: #b44fff;
+    }
+    .eula-checkbox-wrap input[type="checkbox"]:checked::after {
+      content: '✓'; position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%); color: #fff; font-size: 12px; font-weight: 700;
+    }
+    .eula-checkbox-wrap label {
+      font-size: 11px; color: rgba(180,79,255,0.6); letter-spacing: 0.5px; cursor: pointer;
+    }
+
+    .eula-btns { display: flex; gap: 10px; }
+    .btn-decline {
+      flex: 1; padding: 13px; background: rgba(255,40,40,0.08);
+      border: 1px solid rgba(255,40,40,0.25); border-radius: 12px;
+      font-family: 'Cinzel', serif; font-size: 11px; font-weight: 600;
+      letter-spacing: 2px; color: rgba(255,120,120,0.7); cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn-decline:hover { background: rgba(255,40,40,0.15); }
+    .btn-accept {
+      flex: 1; padding: 13px;
+      background: linear-gradient(135deg, #7000cc, #b44fff, #cc0080);
+      border: none; border-radius: 12px; font-family: 'Cinzel', serif;
+      font-size: 11px; font-weight: 600; letter-spacing: 2px; color: #fff;
+      cursor: pointer; transition: transform 0.15s, box-shadow 0.2s, opacity 0.2s;
+      box-shadow: 0 4px 24px rgba(138,43,226,0.35); opacity: 0.4; pointer-events: none;
+    }
+    .btn-accept.enabled { opacity: 1; pointer-events: auto; }
+    .btn-accept.enabled:hover { transform: translateY(-1px); box-shadow: 0 8px 32px rgba(138,43,226,0.5); }
+  </style>
+</head>
+<body>
+
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+  <div class="particles" id="particles"></div>
+
+  <!-- ═══ EULA OVERLAY ═══ -->
+  <div class="eula-overlay" id="eulaOverlay">
+    <div class="eula-card">
+      <div class="eula-title">End User License Agreement</div>
+      <div class="eula-sub">Quartz · devreign</div>
+      <div class="divider" style="margin-bottom:20px;"></div>
+      <div class="eula-scroll" id="eulaContent">
+END USER LICENSE AGREEMENT
+
+QUARTZ
+
+Effective Date: March 12, 2026
+
+IMPORTANT: PLEASE READ THIS END USER LICENSE AGREEMENT CAREFULLY BEFORE INSTALLING OR USING QUARTZ (THE "SOFTWARE").
+
+This End User License Agreement (the "Agreement" or "EULA") is a legal agreement between you (either an individual or a single entity) and devreign (the "Licensor") for the Quartz web application/service identified above.
+
+By installing, copying, or otherwise using the Software, you agree to be bound by the terms of this Agreement. If you do not agree to the terms of this Agreement, do not install or use the Software.
+
+1. GRANT OF LICENSE
+
+Subject to the terms and conditions of this Agreement, Licensor hereby grants you a educational, non-exclusive, non-transferable license to use the Software.
+
+2. REDISTRIBUTION
+
+Redistribution of the Software is strictly prohibited without prior written consent from the Licensor.
+
+3. MODIFICATIONS
+
+Modification of the Software is strictly prohibited. You may not decompile, disassemble, reverse engineer, or attempt to derive the source code of the Software.
+
+4. OWNERSHIP
+
+The Software is licensed, not sold. The Licensor retains all ownership rights to the Software, including all intellectual property rights. This Agreement does not grant you any rights to trademarks or service marks of the Licensor.
+
+5. TERMINATION
+
+This Agreement is effective until terminated. Your rights under this Agreement will terminate automatically without notice if you fail to comply with any of its terms. Upon termination, you must cease all use of the Software and destroy all copies in your possession.
+
+6. DISCLAIMER OF WARRANTY
+
+THE SOFTWARE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR NONINFRINGEMENT. THE ENTIRE RISK ARISING OUT OF USE OR PERFORMANCE OF THE SOFTWARE REMAINS WITH YOU.
+
+6. LIMITATION OF LIABILITY
+
+IN NO EVENT SHALL THE LICENSOR BE LIABLE FOR ANY SPECIAL, INCIDENTAL, INDIRECT, OR CONSEQUENTIAL DAMAGES WHATSOEVER (INCLUDING, WITHOUT LIMITATION, DAMAGES FOR LOSS OF BUSINESS PROFITS, BUSINESS INTERRUPTION, LOSS OF BUSINESS INFORMATION, OR ANY OTHER PECUNIARY LOSS) ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN IF THE LICENSOR HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES. IN ANY CASE, THE LICENSOR'S ENTIRE LIABILITY SHALL BE LIMITED TO THE AMOUNT ACTUALLY PAID BY YOU FOR THE SOFTWARE.
+
+7. UPDATES AND SUPPORT
+
+The Licensor may provide you with updates or upgrades to the Software, which will be subject to the terms of this Agreement unless otherwise specified. The Licensor is not obligated to provide maintenance or support for the Software. Any maintenance or support provided by the Licensor will be governed by a separate agreement between you and the Licensor.
+
+8. EXPORT RESTRICTIONS
+
+You acknowledge that the Software may be subject to export restrictions of various countries. You agree to comply with all applicable international and national laws that apply to the Software, including all export restriction regulations.
+
+9. GOVERNING LAW
+
+This Agreement shall be governed by the laws of India without regard to its conflict of law provisions. Any dispute arising under or related to this Agreement shall be subject to the exclusive jurisdiction of the courts located in India.
+
+10. ENTIRE AGREEMENT
+
+This Agreement constitutes the entire agreement between you and the Licensor regarding the Software and supersedes all prior agreements and understandings, whether written or oral, relating to the subject matter of this Agreement.
+
+By installing, copying, or otherwise using the Software, you acknowledge that you have read this Agreement, understand it, and agree to be bound by its terms and conditions.
+
+For questions about this Agreement, please contact: devreign.ai@gmail.com
+
+devreign
+https://quartz-gray.vercel.app
+
+© 2026 devreign. All Rights Reserved.
+      </div>
+      <div class="eula-checkbox-wrap">
+        <input type="checkbox" id="eulaCheck" onchange="toggleAccept()">
+        <label for="eulaCheck">I have read and agree to the EULA</label>
+      </div>
+      <div class="eula-btns">
+        <button class="btn-decline" onclick="declineEula()">DECLINE</button>
+        <button class="btn-accept" id="btnAccept" onclick="acceptEula()">ACCEPT</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+
+    <!-- ═══ SEARCH VIEW ═══ -->
+    <div id="search-view">
+      <div class="logo-wrap">
+        <img src="quartz-logo.svg" alt="Quartz Logo">
+      </div>
+      <h1>Quartz</h1>
+      <div class="subtitle">Order Lookup</div>
+      <div class="gem-dots">
+        <span class="gem-dot"></span>
+        <span class="gem-dot lg"></span>
+        <span class="gem-dot"></span>
+      </div>
+      <div class="divider"></div>
+      <div class="field-label">Order ID</div>
+      <div class="input-wrap">
+        <input type="text" id="orderInput" placeholder="e.g. QTZ-A1B2C3">
+      </div>
+      <button class="btn" onclick="lookupOrder()">TRACK ORDER</button>
+      <div class="error-msg" id="errorMsg">Order not found. Please check your Order ID.</div>
+      <div class="footer-note">Secured by <a href="#">Quartz Systems</a></div>
+    </div>
+
+    <!-- ═══ ORDER VIEW ═══ -->
+    <div id="order-view" style="display:none;">
+      <div class="logo-wrap">
+        <img src="quartz-logo.svg" alt="Quartz Logo">
+      </div>
+      <h1>Quartz</h1>
+      <div class="subtitle">Order Details</div>
+      <div class="gem-dots">
+        <span class="gem-dot"></span>
+        <span class="gem-dot lg"></span>
+        <span class="gem-dot"></span>
+      </div>
+      <div class="divider"></div>
+
+      <div class="order-header">
+        <div class="order-id-badge" id="dispOrderId"></div>
+        <br>
+        <span class="status-badge" id="dispStatus"></span>
+      </div>
+
+      <div class="detail-grid">
+        <div class="detail-row">
+          <span class="detail-key">Customer</span>
+          <span class="detail-value" id="dispCustomer"></span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-key">Product</span>
+          <span class="detail-value" id="dispProduct"></span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-key">Quantity</span>
+          <span class="detail-value" id="dispQty"></span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-key">Date</span>
+          <span class="detail-value" id="dispDate"></span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-key">Amount</span>
+          <span class="detail-value amount" id="dispAmount"></span>
+        </div>
+      </div>
+
+      <div class="qr-section">
+        <img src="qr.jpg" alt="Payment QR">
+        <div class="qr-label">Scan to Pay</div>
+      </div>
+
+      <button class="btn btn-back" onclick="goBack()">← BACK</button>
+      <div class="footer-note">Secured by <a href="#">Quartz Systems</a></div>
+    </div>
+
+  </div>
+
+  <script>
+    // ── Load orders from JSON ──
+    let orders = {};
+    fetch('orders.json')
+      .then(r => r.json())
+      .then(data => { orders = data; })
+      .catch(() => {
+        // Fallback if fetch fails (e.g. file:// protocol)
+        orders = {
+          "QTZ-A1B2C3": { product: "Quartz Pro License", qty: 1, amount: "₹499", date: "March 12, 2026", status: "pending_payment", customer: "John Doe" },
+          "QTZ-X9Y8Z7": { product: "Quartz Standard License", qty: 2, amount: "₹799", date: "March 12, 2026", status: "pending_payment", customer: "Jane Smith" }
+        };
+      });
+
+    let pendingOrder = null;
+    let eulaAccepted = false;
+
+    function lookupOrder() {
+      const id = document.getElementById('orderInput').value.trim().toUpperCase();
+      const err = document.getElementById('errorMsg');
+
+      if (orders[id]) {
+        err.classList.remove('visible');
+        pendingOrder = { id, data: orders[id] };
+
+        if (!eulaAccepted) {
+          document.getElementById('eulaOverlay').classList.add('visible');
+        } else {
+          showOrder(pendingOrder.id, pendingOrder.data);
+        }
+      } else {
+        err.classList.add('visible');
+      }
+    }
+
+    function toggleAccept() {
+      const checked = document.getElementById('eulaCheck').checked;
+      const btn = document.getElementById('btnAccept');
+      if (checked) { btn.classList.add('enabled'); }
+      else { btn.classList.remove('enabled'); }
+    }
+
+    function acceptEula() {
+      eulaAccepted = true;
+      document.getElementById('eulaOverlay').classList.remove('visible');
+      if (pendingOrder) {
+        showOrder(pendingOrder.id, pendingOrder.data);
+      }
+    }
+
+    function declineEula() {
+      document.getElementById('eulaOverlay').classList.remove('visible');
+      pendingOrder = null;
+    }
+
+    function showOrder(id, o) {
+      document.getElementById('dispOrderId').textContent = id;
+      document.getElementById('dispCustomer').textContent = o.customer;
+      document.getElementById('dispProduct').textContent = o.product;
+      document.getElementById('dispQty').textContent = o.qty;
+      document.getElementById('dispDate').textContent = o.date;
+      document.getElementById('dispAmount').textContent = o.amount;
+
+      const statusEl = document.getElementById('dispStatus');
+      if (o.status === 'pending_payment') {
+        statusEl.textContent = 'PENDING PAYMENT';
+        statusEl.className = 'status-badge status-pending';
+      } else {
+        statusEl.textContent = 'PAID';
+        statusEl.className = 'status-badge status-paid';
+      }
+
+      document.getElementById('search-view').style.display = 'none';
+      document.getElementById('order-view').style.display = 'block';
+    }
+
+    function goBack() {
+      document.getElementById('order-view').style.display = 'none';
+      document.getElementById('search-view').style.display = 'block';
+    }
+
+    // ── Enter key ──
+    document.getElementById('orderInput').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') lookupOrder();
+    });
+
+    // ── Particles ──
+    (function() {
+      const c = document.getElementById('particles');
+      for (let i = 0; i < 30; i++) {
+        const p = document.createElement('div');
+        p.classList.add('particle');
+        p.style.left = Math.random() * 100 + '%';
+        p.style.animationDuration = (8 + Math.random() * 12) + 's';
+        p.style.animationDelay = (Math.random() * 10) + 's';
+        c.appendChild(p);
+      }
+    })();
+  </script>
+
+</body>
+</html>
