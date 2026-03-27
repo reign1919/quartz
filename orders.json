@@ -12,7 +12,15 @@
     "qty": 3,
     "amount": "₹352.00",
     "date": "March 27, 2026",
-    "status": "pending_payment",
+    "status": "completed_payment",
     "customer": "arhan2017001270@ivws.org"
+  },
+  "QTZ-D8B099": {
+    "product": "Organic Chemistry Handwritten Notes (Class 11)",
+    "qty": 1,
+    "amount": "₹45.00",
+    "date": "March 27, 2026",
+    "status": "pending_payment",
+    "customer": "palrangan00102@gmail.com"
   }
 }
