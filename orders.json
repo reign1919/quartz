@@ -12,7 +12,7 @@
     "qty": 3,
     "amount": "₹352.00",
     "date": "March 27, 2026",
-    "status": "completed_payment",
+    "status": "c_payment",
     "customer": "arhan2017001270@ivws.org"
   },
   "QTZ-D8B099": {
@@ -22,5 +22,13 @@
     "date": "March 27, 2026",
     "status": "pending_payment",
     "customer": "palrangan00102@gmail.com"
+  },
+  "QTZ-DA151A": {
+    "product": "History Topper's Handwritten Notes (Class 10)",
+    "qty": 1,
+    "amount": "₹124.00",
+    "date": "March 27, 2026",
+    "status": "pending_payment",
+    "customer": "upamanyum.ivws@gmail.com"
   }
 }
