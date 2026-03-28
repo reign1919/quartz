@@ -20,7 +20,7 @@
     "qty": 1,
     "amount": "₹45.00",
     "date": "March 27, 2026",
-    "status": "pending_payment",
+    "status": "c_payment",
     "customer": "palrangan00102@gmail.com"
   },
   "QTZ-DA151A": {
@@ -30,5 +30,13 @@
     "date": "March 27, 2026",
     "status": "pending_payment",
     "customer": "upamanyum.ivws@gmail.com"
+  },
+  "QTZ-E9C402": {
+    "product": "English Score Booster Kit (Class 11)",
+    "qty": 1,
+    "amount": "₹104.00",
+    "date": "March 28, 2026",
+    "status": "pending_payment",
+    "customer": "vardarajcoudharywhitehatjr@gmail.com"
   }
 }
